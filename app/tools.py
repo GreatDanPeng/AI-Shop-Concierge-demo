@@ -5,6 +5,7 @@ Design rules:
 - Results contain only what the answer needs: no names, no emails, no documents.
 - Offer "terms" text is untrusted data (it could contain instructions), so it is
   returned under the key "terms_untrusted" and the system prompt must say so.
+  list_store_offers (the catalog) leaves the terms text out entirely.
 """
 from __future__ import annotations
 
@@ -19,6 +20,17 @@ TOOLS = [
     {
         "name": "get_eligible_offers",
         "description": "List the offers the current member can use at one store, right now.",
+        "input_schema": {
+            "type": "object",
+            "properties": {"store_id": {"type": "string", "description": "Store id, for example s1."}},
+            "required": ["store_id"],
+        },
+    },
+    {
+        "name": "list_store_offers",
+        "description": "List every offer at one store (public details only), including offers the "
+                       "current member cannot use. Use it to find an offer_id, then call "
+                       "explain_ineligibility to learn why the member can or cannot use it.",
         "input_schema": {
             "type": "object",
             "properties": {"store_id": {"type": "string", "description": "Store id, for example s1."}},
@@ -66,6 +78,13 @@ def _public_offer(o: dict) -> dict:
     }
 
 
+def _catalog_offer(o: dict) -> dict:
+    """Public offer details for the catalog: the same fields, without the untrusted terms text."""
+    public = _public_offer(o)
+    del public["terms_untrusted"]
+    return public
+
+
 def dispatch(name: str, args, *, member_id: str, today: date = DEMO_TODAY,
              offers=None, members=None) -> dict:
     """Run one tool call for the member the SERVER bound to this session."""
@@ -87,6 +106,13 @@ def dispatch(name: str, args, *, member_id: str, today: date = DEMO_TODAY,
         found = eligible_offers(member, store_id, today, offers)
         return {"store_id": store_id, "as_of": today.isoformat(),
                 "offers": [_public_offer(o) for o in found]}
+
+    if name == "list_store_offers":
+        store_id = args.get("store_id")
+        if not isinstance(store_id, str):
+            return {"error": "bad_arguments"}
+        return {"store_id": store_id, "as_of": today.isoformat(),
+                "offers": [_catalog_offer(o) for o in offers if o["store_id"] == store_id]}
 
     if name == "best_combination":
         store_id, cart = args.get("store_id"), args.get("cart_cents")
