@@ -1,0 +1,10 @@
+[
+  {"id": "m_nurse", "display_name": "Avery", "email": "avery@example.invalid",
+   "verifications": {"nurse": "2026-03-01"}, "annual_spend_cents": {}},
+  {"id": "m_student", "display_name": "Sam", "email": "sam@example.invalid",
+   "verifications": {"student": "2025-08-15"}, "annual_spend_cents": {}},
+  {"id": "m_unverified", "display_name": "Jordan", "email": "jordan@example.invalid",
+   "verifications": {}, "annual_spend_cents": {}},
+  {"id": "m_military", "display_name": "Riley", "email": "riley@example.invalid",
+   "verifications": {"military": "2026-05-10"}, "annual_spend_cents": {"o1": 800000}}
+]

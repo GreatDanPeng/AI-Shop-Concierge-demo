@@ -1,0 +1,18 @@
+# Secrets: never commit real keys (CLAUDE.md)
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local tool settings (machine-specific permission lists)
+.claude/settings.local.json
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
