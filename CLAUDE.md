@@ -20,6 +20,7 @@ Unofficial concept demo of a shopping assistant. All data is fake. Not affiliate
 - Do not log message content or personal data. Do not put real keys anywhere: use `.env` (git-ignored).
 - Do not edit existing tests to make them pass. If a test is wrong, say so and ask.
 - No real ID.me logos, styling or page copies. No scraping. No real member data.
+- Brand names (Apple, lululemon, ...) appear as plain text on invented offers only: no logos, no brand photos, and every surface (footer, store description, the concierge) says the offers are invented.
 
 ## How to work
 1. Plan first (Plan Mode) and wait for approval.

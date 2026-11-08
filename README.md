@@ -3,9 +3,12 @@
 ## What this is
 A small shopping demo that matches discounts to who you are. Pick a demo member and the home page greets you and shows, store by store, only the offers you qualify for. Not seeing one you expected? Ask the concierge why (verification expired, annual cap reached, group not verified). The concierge is an AI assistant, reachable from the ask box on the home page or from the floating button; it answers without making up discounts and without exposing other members' data.
 
-![Home: greeting, the ask box with three small prompts, and only the offers you qualify for](docs/screenshots/home-light.png)
+![Home as a military member: greeting, the ask box with three small prompts, and only the offers you qualify for](docs/screenshots/home-light.png)
+![All 19 stores for a teacher: the 13 invented brand offers each have their own illustration](docs/screenshots/brands-grid.png)
 ![A store page with the concierge widget](docs/screenshots/store-page.png)
 ![Dark mode (it follows the system)](docs/screenshots/dark-widget.png)
+
+**Familiar names, invented offers.** To make a demo recognisable, the catalog includes 13 well-known brands (Apple, lululemon, Nike, Samsung, IKEA and others) with offers I made up, for example teachers get 20% off a new Apple computer and military members get 15% off at lululemon. None of these brands offers these discounts and none is involved: the page footer, every one of these stores' descriptions and the concierge all say so. Brand names are plain text; there are no logos or brand photos, and each store has an original illustration. Set `CONCIERGE_BRAND_OFFERS=off` to leave only the six original invented stores.
 
 ## Status
 | Part | State |
@@ -19,6 +22,7 @@ A small shopping demo that matches discounts to who you are. Pick a demo member 
 | Shop page redesign, stage 2 (split view, contextual toolbar) | Waiting for your OK |
 | Floating concierge widget (`widget.js`) | Done (MVP, answers arrive whole, not streamed). Offers in answers are links to the store page; the window shows only the title, the suggestions, the messages and the input |
 | Live "as of" date | Done: today's real date, or the one in `CONCIERGE_TODAY` |
+| Invented offers under 13 familiar brand names, each with its own illustration | Done: on by default, `CONCIERGE_BRAND_OFFERS=off` turns them off |
 | "Show my best deals" with no store chosen | Done: one tool call (`list_all_eligible_offers`) lists up to five offers, largest percentage first, as links |
 | Eval run and pass rate | TODO (the runner is not wired yet) |
 | AI mistakes log | 2 real entries |
@@ -43,6 +47,7 @@ Working on the page: `cd web && npm run build:widget && npm run dev` (Vite proxi
 | `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | Use OpenRouter (cheap models for testing). The model id is not in the code. |
 | `ANTHROPIC_API_KEY` (or `ANTHROPIC_AUTH_TOKEN`), `ANTHROPIC_MODEL` | Use Anthropic instead |
 | `LLM_PROVIDER` | `openrouter` or `anthropic`. If unset: OpenRouter when its key is set, else Anthropic |
+| `CONCIERGE_BRAND_OFFERS` | Optional. `off`, `0`, `false` or `no` leaves only the six original invented stores; anything else (or unset) also shows the 13 brand stores. Read on every request |
 | `CONCIERGE_TODAY` | Optional, `YYYY-MM-DD`. Pins the "as of" date (for repeatable demos, evals and tests). Unset means today's real date, in the server's time zone. A bad value is ignored with a warning |
 
 A key for one provider is never sent to the other. Never set `ANTHROPIC_LOG=debug` expecting to see requests: the code keeps the SDK's debug logs off because they contain the member's message.
@@ -77,6 +82,7 @@ The page can then call `window.Concierge.setStore(id, name)`, `.open()`, `.close
 
 8. **Only what you qualify for.** The page never shows an offer you do not qualify for, and hides a store with none; the concierge explains why an offer is missing.
 9. **Tokens, not literals.** Every colour, radius, spacing step, shadow, font size and motion duration lives in `web/src/design/tokens.css` (light, dark, reduced motion). A test fails if one appears anywhere else, and others check AA contrast in both themes.
+11. **Invented offers under familiar names, kept honest.** The brand offers live in their own files (`data/brand_stores.json`, `data/brand_offers.json`) and are merged by `app/catalog.py`; the rules engine is untouched and every test but one file runs on the original six stores. Each brand store's description says the offers are invented, the footer says no brand offers these discounts, and the concierge's rules tell it to say so if asked.
 10. **The server writes the links.** When the concierge names an offer you can use, it copies a ready-made link (`link_markdown`, from `app/links.py`) such as `[Cobalt Shoes: 4% cash back](#/store/s4)`, which opens that store page in this shop. The model never builds an address, offers you cannot use get no link, and the page turns a link into a link only when its address is exactly `#/store/<id>`; anything else (`https://...`, `javascript:`, `..`) stays visible text. This stops an offer's untrusted terms text from steering the model into a bad link.
 
 ## Design
