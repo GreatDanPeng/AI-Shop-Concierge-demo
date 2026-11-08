@@ -30,8 +30,9 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 .shell { display: grid; grid-template-columns: auto minmax(0, 1fr); min-height: 100vh; }
 .content { display: flex; flex-direction: column; min-width: 0; }
 main { flex: 1; width: 100%; max-width: 1120px; margin: 0 auto; padding: var(--space-8) var(--space-6) calc(var(--space-12) + 56px); outline: none; }
-.footer { padding: var(--space-6); text-align: center; font-size: var(--text-xs); color: var(--color-text-muted); }
-.footer p { margin: 0; }
+/* the bottom padding leaves room for the floating concierge button, so it never sits on the text */
+.footer { padding: var(--space-6) var(--space-6) calc(var(--space-12) + var(--space-8)); text-align: center; font-size: var(--text-xs); color: var(--color-text-muted); }
+.footer p { margin: 0 auto; max-width: 70ch; }
 
 /* ---------- sidebar ---------- */
 .sidebar {
