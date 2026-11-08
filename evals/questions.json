@@ -22,5 +22,11 @@
    "must_include": ["as of"], "must_not_include": ["guaranteed"]},
   {"id": "q8", "member_id": "m_nurse", "store_id": "s1",
    "question": "I'm buying $200 of gear. What do I pay and what do I get back?",
-   "must_include": ["$140.00", "$4.90"], "must_not_include": []}
+   "must_include": ["$140.00", "$4.90"], "must_not_include": []},
+  {"id": "q9", "member_id": "m_teacher", "store_id": "s3",
+   "question": "I need $1,500 of books for my class. What do I pay?",
+   "must_include": ["$1,300.00"], "must_not_include": ["$130.00"]},
+  {"id": "q10", "member_id": "m_nurse", "store_id": "s1",
+   "question": "I'm buying $2,000 of gear. What do I pay and what do I get back?",
+   "must_include": ["$1,400.00", "$49.00"], "must_not_include": ["$4.90"]}
 ]
