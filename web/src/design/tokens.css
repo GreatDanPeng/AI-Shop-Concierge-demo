@@ -1,0 +1,150 @@
+/* Design tokens: the ONLY place colours, radii, shadows, fonts and motion durations are written.
+   Light is the default. Dark follows the system unless the page sets data-theme="light" or "dark".
+   The :host selectors let the widget's shadow root read the same tokens. tokens.test.ts enforces this. */
+
+:root,
+:host {
+  /* page background: a very soft pastel gradient (pale lavender, blue, pink) */
+  --color-bg-start: #eef1ff;
+  --color-bg-mid: #eaf3ff;
+  --color-bg-end: #fdeef6;
+  --gradient-page: linear-gradient(135deg, var(--color-bg-start) 0%, var(--color-bg-mid) 50%, var(--color-bg-end) 100%);
+
+  /* neutrals: content sits on white or soft cards; the accent is for primary buttons and focus only */
+  --color-surface: #ffffff;
+  --color-surface-alt: #f5f6fb;
+  --color-text: #1c2130;
+  --color-text-muted: #566073;
+  --color-border: #d9dce8;
+  --color-accent: #4f52b2;
+  --color-accent-hover: #3f4296;
+  --color-accent-contrast: #ffffff;
+  --color-focus: #4f52b2;
+  --color-success-text: #17623d;
+  --color-success-bg: #e3f4ea;
+  --color-danger-text: #9a2a2a;
+  --color-danger-bg: #fdecec;
+  --color-overlay: rgba(28, 33, 48, 0.45);
+
+  /* palette for the store illustrations */
+  --art-bg: #eef0fb;
+  --art-a: #b9bdf3;
+  --art-b: #f4bad4;
+  --art-c: #a9d9f1;
+  --art-line: #4f52b2;
+
+  /* shape: generous radii, hairline borders, very light shadows */
+  --radius-small: 8px;
+  --radius-control: 12px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --shadow-hairline: 0 0 0 1px var(--color-border);
+  --shadow-soft: 0 1px 2px rgba(28, 33, 48, 0.06), 0 4px 12px rgba(28, 33, 48, 0.05);
+  --shadow-popover: 0 8px 24px rgba(28, 33, 48, 0.16);
+  --focus-ring: 0 0 0 3px var(--color-focus);
+
+  /* spacing: a 4px grid */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* typography: hierarchy comes from size and weight, not colour */
+  --font-sans: "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 28px;
+  --text-hero: 36px;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+
+  /* motion: restrained, 150 to 250 ms, ease-out */
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --motion-slow: 250ms;
+  --motion-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* dark, following the system unless the page chose light */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]),
+  :host(:not([data-theme="light"])) {
+    --color-bg-start: #12131c;
+    --color-bg-mid: #151827;
+    --color-bg-end: #1d1322;
+    --gradient-page: linear-gradient(135deg, var(--color-bg-start) 0%, var(--color-bg-mid) 50%, var(--color-bg-end) 100%);
+    --color-surface: #1c1f2e;
+    --color-surface-alt: #252940;
+    --color-text: #eceff8;
+    --color-text-muted: #aab1c6;
+    --color-border: #353a55;
+    --color-accent: #9b9ef5;
+    --color-accent-hover: #b3b6ff;
+    --color-accent-contrast: #12131c;
+    --color-focus: #b3b6ff;
+    --color-success-text: #7fd6a4;
+    --color-success-bg: #17382a;
+    --color-danger-text: #ff9d9d;
+    --color-danger-bg: #3d1b1f;
+    --color-overlay: rgba(0, 0, 0, 0.6);
+    --art-bg: #232743;
+    --art-a: #5b60b8;
+    --art-b: #a8618a;
+    --art-c: #4a89a8;
+    --art-line: #b3b6ff;
+    --shadow-hairline: 0 0 0 1px var(--color-border);
+    --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.25);
+    --shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* dark, chosen explicitly by the page (identical to the set above: a test checks they cannot drift) */
+[data-theme="dark"],
+:host([data-theme="dark"]) {
+  --color-bg-start: #12131c;
+  --color-bg-mid: #151827;
+  --color-bg-end: #1d1322;
+  --gradient-page: linear-gradient(135deg, var(--color-bg-start) 0%, var(--color-bg-mid) 50%, var(--color-bg-end) 100%);
+  --color-surface: #1c1f2e;
+  --color-surface-alt: #252940;
+  --color-text: #eceff8;
+  --color-text-muted: #aab1c6;
+  --color-border: #353a55;
+  --color-accent: #9b9ef5;
+  --color-accent-hover: #b3b6ff;
+  --color-accent-contrast: #12131c;
+  --color-focus: #b3b6ff;
+  --color-success-text: #7fd6a4;
+  --color-success-bg: #17382a;
+  --color-danger-text: #ff9d9d;
+  --color-danger-bg: #3d1b1f;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  --art-bg: #232743;
+  --art-a: #5b60b8;
+  --art-b: #a8618a;
+  --art-c: #4a89a8;
+  --art-line: #b3b6ff;
+  --shadow-hairline: 0 0 0 1px var(--color-border);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* people who ask for reduced motion get none */
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  :host {
+    --motion-fast: 0.01ms;
+    --motion-base: 0.01ms;
+    --motion-slow: 0.01ms;
+  }
+}
