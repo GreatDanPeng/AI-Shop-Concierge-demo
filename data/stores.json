@@ -1,8 +1,14 @@
 [
-  {"id": "s1", "name": "Fjordline Outdoors", "blurb": "Outdoor gear (fictional store)"},
-  {"id": "s2", "name": "Voltage Electronics", "blurb": "Electronics (fictional store)"},
-  {"id": "s3", "name": "Inkwell Books", "blurb": "Books (fictional store)"},
-  {"id": "s4", "name": "Cobalt Shoes", "blurb": "Footwear (fictional store)"},
-  {"id": "s5", "name": "Harbor & Hearth", "blurb": "Home goods (fictional store)"},
-  {"id": "s6", "name": "Lumen Laptops", "blurb": "Laptops (fictional store)"}
+  {"id": "s1", "name": "Fjordline Outdoors", "blurb": "Outdoor gear (fictional store)",
+   "category": "Outdoors", "art": "tent", "image": null, "image_credit": null},
+  {"id": "s2", "name": "Voltage Electronics", "blurb": "Electronics (fictional store)",
+   "category": "Electronics", "art": "headphones", "image": null, "image_credit": null},
+  {"id": "s3", "name": "Inkwell Books", "blurb": "Books (fictional store)",
+   "category": "Books", "art": "books", "image": null, "image_credit": null},
+  {"id": "s4", "name": "Cobalt Shoes", "blurb": "Footwear (fictional store)",
+   "category": "Footwear", "art": "sneaker", "image": null, "image_credit": null},
+  {"id": "s5", "name": "Harbor & Hearth", "blurb": "Home goods (fictional store)",
+   "category": "Home", "art": "lamp", "image": null, "image_credit": null},
+  {"id": "s6", "name": "Lumen Laptops", "blurb": "Laptops (fictional store)",
+   "category": "Electronics", "art": "laptop", "image": null, "image_credit": null}
 ]

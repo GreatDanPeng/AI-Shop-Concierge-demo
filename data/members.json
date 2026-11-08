@@ -6,5 +6,7 @@
   {"id": "m_unverified", "display_name": "Jordan", "email": "jordan@example.invalid",
    "verifications": {}, "annual_spend_cents": {}},
   {"id": "m_military", "display_name": "Riley", "email": "riley@example.invalid",
-   "verifications": {"military": "2026-05-10"}, "annual_spend_cents": {"o1": 800000}}
+   "verifications": {"military": "2026-05-10"}, "annual_spend_cents": {"o1": 800000}},
+  {"id": "m_teacher", "display_name": "Morgan", "email": "morgan@example.invalid",
+   "verifications": {"teacher": "2026-09-01"}, "annual_spend_cents": {}}
 ]
