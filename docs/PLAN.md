@@ -21,7 +21,7 @@ Working plan for the concierge demo. The roadmap (M0-M9) comes first. **Appendix
 | Best deals with no store | New read-only tool `list_all_eligible_offers` plus a prompt rule; the concierge answers "Show my best deals" straight away instead of asking which store | Done (494 Python tests, 64 real-browser checks, 40 of 40 live runs called the tool and listed valid links). Not yet committed. An eval question for it is not added: `tests/test_evals.py` requires a real `store_id` |
 | Brand offers for demos | `app/catalog.py` merges 13 invented brand stores (24 offers) into the catalog, on by default, `CONCIERGE_BRAND_OFFERS=off` to turn off; 13 original illustrations; footer, store blurbs and the concierge's rules say the offers are invented | Done (561 Python tests, 395 web tests, 72 real-browser checks). Not yet committed |
 | UI redesign, stage 2 | Chat thread shared by widget and page, split view with draggable divider, contextual toolbar | Waits for your OK, as `docs/UI_DESIGN.md` asks |
-| M1 Steps 5-7 | Server wiring is done (above); eval runner wiring and `must_call_tool` checks, then a live eval run | Not started (`evals/run_evals.py` `ask()` is still a stub) |
+| M1 Steps 5-7 | Eval runner with repeats, labelled results and a JSON report; `must_call_tool`, `must_not_call_tool` and server-link checks; 20 questions; a live run | Done on branch `feat/wire-evals` (683 Python tests). First run 58/60, second 60/60 after two fixes found by the run; q14 alone 8/10. Not yet pushed |
 | M2 | Walking skeleton (page + widget) is done in the MVP; Dockerfile and compose are not | Docker not started |
 | M3-M9 | Postgres, tool classes, RAG, streaming, evals, SDK and CLI, CI | Not started |
 

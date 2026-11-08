@@ -24,7 +24,7 @@ A small shopping demo that matches discounts to who you are. Pick a demo member 
 | Live "as of" date | Done: today's real date, or the one in `CONCIERGE_TODAY` |
 | Invented offers under 13 familiar brand names, each with its own illustration | Done: on by default, `CONCIERGE_BRAND_OFFERS=off` turns them off |
 | "Show my best deals" with no store chosen | Done: one tool call (`list_all_eligible_offers`) lists up to five offers, largest percentage first, as links |
-| Eval run and pass rate | TODO (the runner is not wired yet) |
+| Eval run and pass rate | Done: `python -m evals.run_evals` (20 questions); results in the Evals section |
 | AI mistakes log | 2 real entries |
 
 ## Run
@@ -94,7 +94,19 @@ The look follows [docs/UI_DESIGN.md](docs/UI_DESIGN.md): a calm, Copilot-style d
 - A verification is valid for 365 days.
 
 ## Evals
-`evals/questions.json` holds the question set (10 questions); `python -m evals.run_evals` is meant to run it but is not wired yet. Results: _TODO (pass rate, which questions fail and why)_. The checks are keyword heuristics, so they catch obvious errors, not subtle ones. Live spot checks so far (single runs, a few dozen questions, DeepSeek through OpenRouter) are described in the AI mistakes log; they are not a pass rate.
+`python -m evals.run_evals` asks 20 questions through the real assistant loop and prints a pass rate. It needs a key in `.env`. Useful options: `--repeat 3` (runs per question; the default is 1 so nothing spends money by surprise), `--only q1,q14`, `--live-date`. A JSON report with every answer, the tools called and each problem goes to `evals/results/` (git-ignored).
+
+Every result is labelled with the provider and model, a short hash of the system rules and tools, the date used, and the repeat count. A run is repeatable by default: the "as of" date is pinned to 2026-11-06 (unless `CONCIERGE_TODAY` is set) and the catalog is the original six stores; the four brand questions switch the brand offers on for themselves.
+
+The checks are keyword, tool-call and link heuristics (`evals/checks.py`): the words an answer must or must not contain, which tools it must or must not have called (prices must come from `best_combination`, best deals from `list_all_eligible_offers`), and that every link is one the server offered. They catch obvious mistakes, not subtle ones, and a failing check is not automatically the model's fault, so read the answer first (two of the findings below were real, and one early checker of mine was too strict).
+
+| Date | Model | Prompt hash | Runs | Passed | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 2026-11-08 | `deepseek/deepseek-v4.1-flash-1017` via OpenRouter | `8c04d741` | 20 questions x 3 | 58 of 60 (97%) | q14 (Chinese): the model rewrote the link text in 2 of 3 answers |
+| 2026-11-08 | same | `a9ad2358` | 20 questions x 3 | 60 of 60 (100%) | after two fixes (below); no answer names two different dates |
+| 2026-11-08 | same | `a9ad2358` | q14 x 10 | 8 of 10 (80%) | one link text translated again, one link left out |
+
+What the run found, both logged in [docs/AI_MISTAKES.md](docs/AI_MISTAKES.md): links lose their exact text when the member writes in Chinese (the rule now says what to translate; still not perfect), and the model sometimes quoted a date stamped in the data files instead of the live date (that stamp is no longer shown to the model). One model, one day, small samples: a smoke test, not a benchmark.
 
 ## Known limitations: do not put this on the public internet
 - The demo sign-in is a plain cookie: anyone can pick any member. It is not authentication.
