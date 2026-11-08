@@ -1,6 +1,4 @@
-# Concierge demo (unofficial concept demo, fake data)
-
-> Not affiliated with ID.me. All stores, offers and members are invented. The matching rules are my assumptions from public pages, not ID.me's implementation.
+# AI Shop Concierge demo 
 
 ## What this is
 A small shopping demo that matches discounts to who you are. Pick a demo member and the home page greets you and shows, store by store, only the offers you qualify for. Not seeing one you expected? Ask the concierge why (verification expired, annual cap reached, group not verified). The concierge is an AI assistant, reachable from the ask box on the home page or from the floating button; it answers without making up discounts and without exposing other members' data.
