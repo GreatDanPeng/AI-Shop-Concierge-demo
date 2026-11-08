@@ -8,8 +8,9 @@ from __future__ import annotations
 
 from datetime import date, timedelta
 
+from .catalog import load_offers, load_stores
 from .engine import (DEMO_TODAY, VERIFICATION_DAYS, best_combination, explain_ineligibility,
-                     load_offers, load_stores, verification_status)
+                     verification_status)
 from .links import link_applied_offers
 from .money import format_cents, headline_label, with_dollars
 

@@ -11,8 +11,9 @@ from __future__ import annotations
 
 from datetime import date
 
+from .catalog import load_offers, load_stores
 from .engine import (DEMO_TODAY, best_combination, eligible_offers,
-                     explain_ineligibility, load_members, load_offers, load_stores)
+                     explain_ineligibility, load_members)
 from .links import add_link, link_applied_offers
 from .money import format_cents, with_dollars
 

@@ -17,8 +17,9 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .assistant import (AssistantUnavailable, ConfigError, UnknownStoreError, build_client,
                         provider_status, run_assistant)
+from .catalog import load_stores
 from .clock import today
-from .engine import load_members, load_stores
+from .engine import load_members
 from .env import load_env_file
 from .matching import describe_identity, estimate, match_offers
 from .tools import MAX_CART_CENTS  # one limit for the web API and for the model's tool

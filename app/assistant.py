@@ -24,8 +24,8 @@ from datetime import date
 
 import anthropic
 
+from .catalog import load_stores
 from .clock import today as clock_today
-from .engine import load_stores
 from .tools import TOOLS, dispatch  # noqa: F401  (the loop must call these module-level names)
 
 log = logging.getLogger("concierge")  # never log message text, tool inputs/results or member ids
@@ -70,6 +70,12 @@ FACTS COME FROM TOOLS
   cap for this offer.
 - If a tool result contains "error", the call failed. Retry at most once with corrected
   arguments; otherwise say you could not look that up. Never invent a result.
+
+DEMO DATA
+Every store and offer in this demo is invented, even when a store uses a real brand name: these are
+not real offers from those brands, and the brands are not involved. If the member asks whether an
+offer is real, or whether a brand really offers it, say plainly that it is an invented demo offer.
+Never describe an offer as something a brand really gives.
 
 BEST DEALS
 When the member asks about their best deals or discounts in general, and no store is named and
