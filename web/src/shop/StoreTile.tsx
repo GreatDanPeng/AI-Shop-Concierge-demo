@@ -7,7 +7,7 @@ export function StoreTile({ store }: { store: StoreMatches }) {
   return (
     <li className="tile">
       <a className="tile-link" href={`#/store/${store.store_id}`}>
-        <StoreArt art={store.art} image={store.image} credit={store.image_credit} />
+        <StoreArt art={store.art} image={store.image} credit={store.image_credit} logo={store.logo} />
         <div className="tile-body">
           <h3>{store.name}</h3>
           <p className="tile-category">{store.category}</p>

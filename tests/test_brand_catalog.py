@@ -137,7 +137,7 @@ def test_every_brand_store_says_in_its_blurb_that_it_is_invented():
 
 def test_brand_stores_have_the_fields_the_page_needs_and_any_photo_follows_the_photo_rule():
     for s in brand_stores():
-        assert set(s) == {"id", "name", "blurb", "category", "art", "image", "image_credit"}, s["id"]
+        assert set(s) == {"id", "name", "blurb", "category", "art", "image", "image_credit", "logo"}, s["id"]
         if s["image"] is not None:           # a licensed photo you added (docs/IMAGES.md): safe path and a credit
             assert re.fullmatch(r"/stores/[A-Za-z0-9_-]+\.(jpg|jpeg|png|webp|avif)", s["image"]), s["id"]
             assert s["image_credit"], s["id"]

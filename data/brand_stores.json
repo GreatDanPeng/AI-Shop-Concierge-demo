@@ -1,15 +1,15 @@
 [
-  {"id": "s7", "name": "Apple", "blurb": "Computers, tablets and phones. Demo offers: invented, not from the brand.", "category": "Electronics", "art": "devices", "image": null, "image_credit": null},
-  {"id": "s8", "name": "Samsung", "blurb": "Phones and TVs. Demo offers: invented, not from the brand.", "category": "Electronics", "art": "phone", "image": null, "image_credit": null},
-  {"id": "s9", "name": "Best Buy", "blurb": "Electronics and appliances. Demo offers: invented, not from the brand.", "category": "Electronics", "art": "tv", "image": null, "image_credit": null},
-  {"id": "s10", "name": "lululemon", "blurb": "Activewear and yoga gear. Demo offers: invented, not from the brand.", "category": "Apparel", "art": "yoga", "image": null, "image_credit": null},
-  {"id": "s11", "name": "Levi's", "blurb": "Jeans and everyday clothing. Demo offers: invented, not from the brand.", "category": "Apparel", "art": "jeans", "image": null, "image_credit": null},
-  {"id": "s12", "name": "Nike", "blurb": "Running shoes and sportswear. Demo offers: invented, not from the brand.", "category": "Footwear", "art": "runner", "image": null, "image_credit": null},
-  {"id": "s13", "name": "REI", "blurb": "Outdoor gear and clothing. Demo offers: invented, not from the brand.", "category": "Outdoors", "art": "backpack", "image": null, "image_credit": null},
-  {"id": "s14", "name": "The North Face", "blurb": "Jackets and outdoor clothing. Demo offers: invented, not from the brand.", "category": "Outdoors", "art": "jacket", "image": null, "image_credit": null},
-  {"id": "s15", "name": "IKEA", "blurb": "Furniture and home goods. Demo offers: invented, not from the brand.", "category": "Home", "art": "sofa", "image": null, "image_credit": null},
-  {"id": "s16", "name": "The Home Depot", "blurb": "Tools and home improvement. Demo offers: invented, not from the brand.", "category": "Home", "art": "toolbox", "image": null, "image_credit": null},
-  {"id": "s17", "name": "Barnes & Noble", "blurb": "Books and gifts. Demo offers: invented, not from the brand.", "category": "Books", "art": "openbook", "image": null, "image_credit": null},
-  {"id": "s18", "name": "Marriott", "blurb": "Hotels and resorts. Demo offers: invented, not from the brand.", "category": "Travel", "art": "hotel", "image": null, "image_credit": null},
-  {"id": "s19", "name": "Hertz", "blurb": "Car rentals. Demo offers: invented, not from the brand.", "category": "Travel", "art": "car", "image": null, "image_credit": null}
+  {"id": "s7", "name": "Apple", "blurb": "Computers, tablets and phones. Demo offers: invented, not from the brand.", "category": "Electronics", "art": "devices", "image": null, "image_credit": null, "logo": "/brands/apple.svg"},
+  {"id": "s8", "name": "Samsung", "blurb": "Phones and TVs. Demo offers: invented, not from the brand.", "category": "Electronics", "art": "phone", "image": null, "image_credit": null, "logo": "/brands/samsung.svg"},
+  {"id": "s9", "name": "Best Buy", "blurb": "Electronics and appliances. Demo offers: invented, not from the brand.", "category": "Electronics", "art": "tv", "image": null, "image_credit": null, "logo": "/brands/bestbuy.svg"},
+  {"id": "s10", "name": "lululemon", "blurb": "Activewear and yoga gear. Demo offers: invented, not from the brand.", "category": "Apparel", "art": "yoga", "image": null, "image_credit": null, "logo": "/brands/lululemon.svg"},
+  {"id": "s11", "name": "Levi's", "blurb": "Jeans and everyday clothing. Demo offers: invented, not from the brand.", "category": "Apparel", "art": "jeans", "image": null, "image_credit": null, "logo": "/brands/levis.svg"},
+  {"id": "s12", "name": "Nike", "blurb": "Running shoes and sportswear. Demo offers: invented, not from the brand.", "category": "Footwear", "art": "runner", "image": null, "image_credit": null, "logo": "/brands/nike.svg"},
+  {"id": "s13", "name": "REI", "blurb": "Outdoor gear and clothing. Demo offers: invented, not from the brand.", "category": "Outdoors", "art": "backpack", "image": null, "image_credit": null, "logo": null},
+  {"id": "s14", "name": "The North Face", "blurb": "Jackets and outdoor clothing. Demo offers: invented, not from the brand.", "category": "Outdoors", "art": "jacket", "image": null, "image_credit": null, "logo": "/brands/thenorthface.svg"},
+  {"id": "s15", "name": "IKEA", "blurb": "Furniture and home goods. Demo offers: invented, not from the brand.", "category": "Home", "art": "sofa", "image": null, "image_credit": null, "logo": "/brands/ikea.svg"},
+  {"id": "s16", "name": "The Home Depot", "blurb": "Tools and home improvement. Demo offers: invented, not from the brand.", "category": "Home", "art": "toolbox", "image": null, "image_credit": null, "logo": "/brands/homedepot.svg"},
+  {"id": "s17", "name": "Barnes & Noble", "blurb": "Books and gifts. Demo offers: invented, not from the brand.", "category": "Books", "art": "openbook", "image": null, "image_credit": null, "logo": "/brands/barnesandnoble.svg"},
+  {"id": "s18", "name": "Marriott", "blurb": "Hotels and resorts. Demo offers: invented, not from the brand.", "category": "Travel", "art": "hotel", "image": null, "image_credit": null, "logo": "/brands/marriott.svg"},
+  {"id": "s19", "name": "Hertz", "blurb": "Car rentals. Demo offers: invented, not from the brand.", "category": "Travel", "art": "car", "image": null, "image_credit": null, "logo": "/brands/hertz.svg"}
 ]

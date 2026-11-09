@@ -1,9 +1,10 @@
 import { useEffect, useState, type ReactNode } from "react";
 
-// A store's picture. By default an original illustration drawn here in code (no downloaded or scraped
-// images). If the store has a licensed photo you added yourself (docs/IMAGES.md), that is shown instead,
-// with its credit, and the illustration comes back if the photo cannot be loaded.
-// Colours come from tokens through the art-* classes (see art.css), never from attributes.
+// A store's picture. In order: a licensed photo you added yourself (docs/IMAGES.md), shown with its credit;
+// then the brand's own logo, a file under /brands/ (see web/public/brands/SOURCES.md), shown contained on a
+// white plate; then an original illustration drawn here in code. If a photo or logo cannot be loaded, the
+// next one down comes back. Illustration colours come from tokens through the art-* classes (see art.css),
+// never from attributes.
 
 const ILLUSTRATIONS: Record<string, ReactNode> = {
   tent: (<>
@@ -164,17 +165,29 @@ const ILLUSTRATIONS: Record<string, ReactNode> = {
   </>),
 };
 
-export type StoreArtProps = { art: string | null; image: string | null; credit: string | null };
+// Only a plain file under /brands/ is ever loaded as a logo: never an address, a query, or a path that climbs.
+const LOGO_PATH = /^\/brands\/[A-Za-z0-9_-]+\.(svg|png|webp)$/;
 
-export function StoreArt({ art, image, credit }: StoreArtProps) {
-  const [failed, setFailed] = useState(false);
-  useEffect(() => setFailed(false), [image]); // a new photo gets a fresh try
+export type StoreArtProps = { art: string | null; image: string | null; credit: string | null; logo?: string | null };
 
-  if (image && !failed) {
+export function StoreArt({ art, image, credit, logo = null }: StoreArtProps) {
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const [logoFailed, setLogoFailed] = useState(false);
+  useEffect(() => setPhotoFailed(false), [image]); // a new photo gets a fresh try
+  useEffect(() => setLogoFailed(false), [logo]); // and so does a new logo
+
+  if (image && !photoFailed) {
     return (
       <div className="store-art">
-        <img src={image} alt="" loading="lazy" onError={() => setFailed(true)} />
+        <img src={image} alt="" loading="lazy" onError={() => setPhotoFailed(true)} />
         {credit && <small className="art-credit">Photo: {credit}</small>}
+      </div>
+    );
+  }
+  if (logo && LOGO_PATH.test(logo) && !logoFailed) {
+    return (
+      <div className="store-art store-art--logo">
+        <img src={logo} alt="" loading="lazy" onError={() => setLogoFailed(true)} />
       </div>
     );
   }

@@ -79,7 +79,7 @@ def match_offers(member: dict, today: date = DEMO_TODAY, *, stores=None, offers=
     return [
         {"store_id": s["id"], "name": s["name"], "blurb": s.get("blurb", ""),
          "category": s.get("category", "Other"), "art": s.get("art"),
-         "image": s.get("image"), "image_credit": s.get("image_credit"),
+         "image": s.get("image"), "image_credit": s.get("image_credit"), "logo": s.get("logo"),
          "offers": [_match_one(member, o, today) for o in offers if o["store_id"] == s["id"]]}
         for s in stores
     ]

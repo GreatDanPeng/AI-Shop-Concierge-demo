@@ -38,7 +38,7 @@ export function StoreDetail({ store, api, onAsk }: { store: StoreMatches | undef
   return (
     <article className="store-page">
       <BackLink />
-      <StoreArt art={store.art} image={store.image} credit={store.image_credit} />
+      <StoreArt art={store.art} image={store.image} credit={store.image_credit} logo={store.logo} />
       <h1>{store.name}</h1>
       <p className="lead">{store.blurb}</p>
       <ul className="offer-list" aria-label="Offers for you">
