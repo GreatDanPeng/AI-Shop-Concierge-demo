@@ -5,7 +5,6 @@
   {"id": "s10", "name": "lululemon", "blurb": "Activewear and yoga gear. Demo offers: invented, not from the brand.", "category": "Apparel", "art": "yoga", "image": null, "image_credit": null, "logo": "/brands/lululemon.svg"},
   {"id": "s11", "name": "Levi's", "blurb": "Jeans and everyday clothing. Demo offers: invented, not from the brand.", "category": "Apparel", "art": "jeans", "image": null, "image_credit": null, "logo": "/brands/levis.svg"},
   {"id": "s12", "name": "Nike", "blurb": "Running shoes and sportswear. Demo offers: invented, not from the brand.", "category": "Footwear", "art": "runner", "image": null, "image_credit": null, "logo": "/brands/nike.svg"},
-  {"id": "s13", "name": "REI", "blurb": "Outdoor gear and clothing. Demo offers: invented, not from the brand.", "category": "Outdoors", "art": "backpack", "image": null, "image_credit": null, "logo": null},
   {"id": "s14", "name": "The North Face", "blurb": "Jackets and outdoor clothing. Demo offers: invented, not from the brand.", "category": "Outdoors", "art": "jacket", "image": null, "image_credit": null, "logo": "/brands/thenorthface.svg"},
   {"id": "s15", "name": "IKEA", "blurb": "Furniture and home goods. Demo offers: invented, not from the brand.", "category": "Home", "art": "sofa", "image": null, "image_credit": null, "logo": "/brands/ikea.svg"},
   {"id": "s16", "name": "The Home Depot", "blurb": "Tools and home improvement. Demo offers: invented, not from the brand.", "category": "Home", "art": "toolbox", "image": null, "image_credit": null, "logo": "/brands/homedepot.svg"},

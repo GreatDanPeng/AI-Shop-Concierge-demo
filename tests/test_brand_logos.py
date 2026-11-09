@@ -1,8 +1,8 @@
 """Each brand store shows its brand's own logo (written before the files and the field existed).
 
 A logo is a small SVG under web/public/brands/, named by the store's `logo` path. The illustration (`art`)
-stays as the fallback, and REI has no free logo file, so its `logo` is null. The files come from two
-sources recorded in web/public/brands/SOURCES.md. SVG can carry scripts and outside links, so every file is
+stays as the fallback. REI had no free logo file, so it was dropped; every brand store has a logo. The files
+come from two sources recorded in web/public/brands/SOURCES.md. SVG can carry scripts and outside links, so every file is
 inspected here, and a file that fails is not allowed into the project.
 """
 import re
@@ -24,7 +24,7 @@ TODAY = date(2026, 11, 6)
 LOGO_PATH = re.compile(r"/brands/[A-Za-z0-9_-]+\.(svg|png|webp)")
 EXPECTED = {
     "Apple": "apple.svg", "Samsung": "samsung.svg", "Best Buy": "bestbuy.svg", "lululemon": "lululemon.svg",
-    "Levi's": "levis.svg", "Nike": "nike.svg", "REI": None, "The North Face": "thenorthface.svg",
+    "Levi's": "levis.svg", "Nike": "nike.svg", "The North Face": "thenorthface.svg",
     "IKEA": "ikea.svg", "The Home Depot": "homedepot.svg", "Barnes & Noble": "barnesandnoble.svg",
     "Marriott": "marriott.svg", "Hertz": "hertz.svg",
 }
@@ -40,18 +40,16 @@ def brands_on(monkeypatch):
 
 
 def brand_stores():
-    return load_stores()[len(engine.load_stores()):]
+    """With the brands on, the served catalog IS the brand catalog."""
+    return load_stores()
 
 
 # ---------------------------------------------------------------- the data
-def test_every_brand_store_has_a_logo_field_and_only_rei_has_none():
+def test_every_brand_store_has_its_own_logo_and_none_is_missing():
     stores = {s["name"]: s for s in brand_stores()}
-    assert set(stores) == set(EXPECTED)
+    assert set(stores) == set(EXPECTED) and len(stores) == 12 and "REI" not in stores
     for name, store in stores.items():
-        assert "logo" in store, name
-        expected = EXPECTED[name]
-        assert store["logo"] == (f"/brands/{expected}" if expected else None), name
-    assert [n for n, s in stores.items() if s["logo"] is None] == ["REI"]
+        assert store["logo"] == f"/brands/{EXPECTED[name]}", name
 
 
 def test_a_logo_path_is_a_plain_path_under_brands_never_an_address():
@@ -146,20 +144,22 @@ def test_sources_are_written_down_next_to_the_files():
         assert "https://" in line, path.name
         assert re.search(r"CC0|Public domain", line), path.name
     assert "trademark" in sources.lower()
-    assert "REI" in sources                                               # says why it has no logo
+    assert "REI" in sources                                               # says why that store was dropped
 
 
 # ---------------------------------------------------------------- through the app
 def test_match_offers_carries_the_logo_for_brand_stores_and_none_for_the_original_six():
     result = {s["name"]: s for s in match_offers(load_members()[0], TODAY)}
     assert result["Apple"]["logo"] == "/brands/apple.svg"
-    assert result["REI"]["logo"] is None
-    assert result["Fjordline Outdoors"]["logo"] is None
+    assert all(s["logo"] for s in result.values()) and "Fjordline Outdoors" not in result
+    off = {s["name"]: s for s in match_offers(load_members()[0], TODAY, stores=engine.load_stores(),
+                                              offers=engine.load_offers())}
+    assert all(s["logo"] is None for s in off.values())               # the original six have no logo
 
 
 def test_the_discounts_endpoint_carries_the_logo_too():
     client = TestClient(server.app)
     assert client.post("/demo/switch-member", json={"member_id": "m_teacher"}).status_code == 200
     stores = {s["name"]: s for s in client.get("/discounts").json()["stores"]}
-    assert stores["Nike"]["logo"] == "/brands/nike.svg" and stores["REI"]["logo"] is None
-    assert all("logo" in s for s in stores.values())
+    assert stores["Nike"]["logo"] == "/brands/nike.svg"
+    assert all(s["logo"] for s in stores.values()) and len(stores) == 12

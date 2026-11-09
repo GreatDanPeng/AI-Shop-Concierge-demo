@@ -4,7 +4,7 @@ import { StoreArt } from "./StoreArt";
 
 // One original illustration for each invented brand-store: everyday objects only, no logos, no brand marks,
 // drawn from tokens like the first six. Written before the drawings.
-const BRAND_ART = ["devices", "phone", "tv", "yoga", "jeans", "runner", "backpack", "jacket", "sofa", "toolbox",
+const BRAND_ART = ["devices", "phone", "tv", "yoga", "jeans", "runner", "jacket", "sofa", "toolbox",
   "openbook", "hotel", "car"];
 const ORIGINAL_ART = ["tent", "headphones", "books", "sneaker", "lamp", "laptop"];
 const svgOf = (art: string) =>
@@ -17,8 +17,8 @@ describe("brand store illustrations", () => {
     expect(svg.querySelectorAll("path, rect, ellipse, circle, line").length).toBeGreaterThan(3);
   });
 
-  it("gives each of the thirteen stores a picture of its own", () => {
-    expect(new Set(BRAND_ART).size).toBe(13);
+  it("gives each of the twelve stores a picture of its own", () => {
+    expect(new Set(BRAND_ART).size).toBe(12);
     expect(BRAND_ART.filter((key) => ORIGINAL_ART.includes(key) || key === "bag")).toEqual([]);
     const drawings = [...BRAND_ART, ...ORIGINAL_ART, "bag"].map((key) => svgOf(key).innerHTML);
     expect(new Set(drawings).size).toBe(drawings.length);              // no two pictures are the same drawing

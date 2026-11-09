@@ -20,6 +20,8 @@ from tests.fakes import FakeClient, end_turn, tool_turn, tool_use_block
 pytestmark = pytest.mark.usefixtures("configured_env")
 
 Q = {"id": "t1", "member_id": "m_teacher", "store_id": "s1", "question": "What can I get?"}
+# With the brand catalog on, the original stores are unknown, so a brand question names no store.
+BRANDS_Q = {**Q, "store_id": None, "catalog": "brands"}
 
 
 def sent_tool_result(client):
@@ -63,16 +65,16 @@ def test_the_catalog_is_the_original_six_stores_unless_the_question_asks_for_the
 
 
 def test_the_catalog_switch_is_put_back_afterwards(monkeypatch):
-    ask({**Q, "catalog": "brands"}, FakeClient(end_turn("x")))
+    ask(BRANDS_Q, FakeClient(end_turn("x")))
     assert os.environ[BRANDS_VARIABLE] == "off"                  # conftest's value, restored
     monkeypatch.delenv(BRANDS_VARIABLE)
-    ask({**Q, "catalog": "brands"}, FakeClient(end_turn("x")))
+    ask(BRANDS_Q, FakeClient(end_turn("x")))
     assert BRANDS_VARIABLE not in os.environ                     # and "unset" is restored as unset
 
 
 def test_the_switch_is_restored_even_when_the_assistant_fails():
     with pytest.raises(AssistantUnavailable):
-        ask({**Q, "catalog": "brands"}, FakeClient(AssistantUnavailable("down")))
+        ask(BRANDS_Q, FakeClient(AssistantUnavailable("down")))
     assert os.environ[BRANDS_VARIABLE] == "off"
 
 
@@ -80,7 +82,7 @@ def test_ask_also_returns_the_links_the_server_offers_this_member():
     nurse = ask({**Q, "member_id": "m_nurse"}, FakeClient(end_turn("x")))
     assert "[Fjordline Outdoors: 30% off](#/store/s1)" in nurse.allowed_links
     morgan_original = ask(Q, FakeClient(end_turn("x")))
-    morgan_brands = ask({**Q, "catalog": "brands"}, FakeClient(end_turn("x")))
+    morgan_brands = ask(BRANDS_Q, FakeClient(end_turn("x")))
     assert "[Apple: 20% off](#/store/s7)" in morgan_brands.allowed_links
     assert "[Apple: 20% off](#/store/s7)" not in morgan_original.allowed_links
 

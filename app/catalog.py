@@ -1,12 +1,14 @@
-"""The catalog the app serves: the engine's stores and offers, plus invented offers from familiar brands.
+"""The catalog the app serves: invented offers from familiar brands, or the original invented stores.
 
-The brand offers (data/brand_stores.json, data/brand_offers.json) make a demo recognisable to a general
-audience. They are INVENTED: these brands do not offer these discounts and are not involved. They are on
-by default and CONCIERGE_BRAND_OFFERS=off (also 0, false, no) switches them off, leaving only the original
-invented stores. The switch is read on every call, so it needs no restart.
+With the brand offers ON (the default) the app serves ONLY the 12 brands that have a logo, with offers I
+made up (data/brand_stores.json, data/brand_offers.json). They make a demo recognisable to a general
+audience; they are INVENTED: these brands do not offer these discounts and are not involved. With
+CONCIERGE_BRAND_OFFERS=off (also 0, false, no) the app serves only the six original invented stores
+(data/stores.json, data/offers.json), which the starter tests and the eval questions rely on. The switch
+is read on every call, so it needs no restart.
 
-The rules engine is untouched. Its own loaders still return only the original data, which is what its
-tests rely on; the tools, matching, server and assistant import their loaders from here.
+The rules engine is untouched. Its own loaders still return only the original data; the tools, matching,
+server and assistant import their loaders from here.
 """
 from __future__ import annotations
 
@@ -32,12 +34,10 @@ def _brand_data(name: str) -> list:
 
 
 def load_stores(environ: Mapping[str, str] | None = None) -> list:
-    """The original stores first, then the brand stores (unless switched off)."""
-    stores = engine.load_stores()
-    return stores + _brand_data("brand_stores.json") if brand_offers_on(environ) else stores
+    """The 12 brand stores when the brand offers are on, otherwise the six original stores."""
+    return _brand_data("brand_stores.json") if brand_offers_on(environ) else engine.load_stores()
 
 
 def load_offers(environ: Mapping[str, str] | None = None) -> list:
-    """The original offers first, then the brand offers (unless switched off)."""
-    offers = engine.load_offers()
-    return offers + _brand_data("brand_offers.json") if brand_offers_on(environ) else offers
+    """The brand offers when the brand offers are on, otherwise the original offers."""
+    return _brand_data("brand_offers.json") if brand_offers_on(environ) else engine.load_offers()

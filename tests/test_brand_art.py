@@ -24,14 +24,14 @@ def test_the_source_lists_the_pictures_it_can_draw():
     assert {"tent", "headphones", "books", "sneaker", "lamp", "laptop", "bag"} <= DRAWN
 
 
-@pytest.mark.parametrize("store", load_stores({}), ids=lambda s: s["id"])
+@pytest.mark.parametrize("store", engine.load_stores() + load_stores({}), ids=lambda s: s["id"])
 def test_every_store_names_a_picture_the_page_can_draw(store):
     assert store["art"] in DRAWN, store["name"]
 
 
 def test_each_brand_store_has_a_picture_of_its_own():
-    brand = load_stores()[len(engine.load_stores()):]
+    brand = load_stores()                       # with the brands on, the served catalog is the 12 brands
     arts = [s["art"] for s in brand]
-    assert len(set(arts)) == len(arts) == 13
+    assert len(set(arts)) == len(arts) == 12
     assert not set(arts) & {s["art"] for s in engine.load_stores()}      # none is one of the original six
     assert "bag" not in arts                                              # and none is the fallback

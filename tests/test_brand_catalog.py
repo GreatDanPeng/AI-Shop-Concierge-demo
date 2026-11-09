@@ -1,8 +1,8 @@
-"""Invented demo offers from familiar brands (written before app/catalog.py and the data files).
+"""Invented demo offers from familiar brands.
 
-The offers do not exist in real life; they make the demo recognisable. They live in their own data files
-and are merged by app/catalog.py unless CONCIERGE_BRAND_OFFERS switches them off. The original six stores
-and their offers stay first and unchanged, and tests/conftest.py pins the switch to "off" for every other
+The offers do not exist in real life; they make the demo recognisable. They live in their own data files.
+With CONCIERGE_BRAND_OFFERS on (the default) app/catalog.py serves ONLY the 12 brands that have a logo; off,
+it serves only the six original invented stores. tests/conftest.py pins the switch to "off" for every other
 test, so the rest of the suite still sees only the original catalog.
 """
 import json
@@ -22,8 +22,11 @@ from app.tools import dispatch
 TODAY = date(2026, 11, 6)
 MEMBERS = {m["id"]: m for m in load_members()}
 GROUPS = {"student", "teacher", "military", "nurse", "first_responder"}
-BRAND_NAMES = ["Apple", "Samsung", "Best Buy", "lululemon", "Levi's", "Nike", "REI", "The North Face",
+BRAND_NAMES = ["Apple", "Samsung", "Best Buy", "lululemon", "Levi's", "Nike", "The North Face",
                "IKEA", "The Home Depot", "Barnes & Noble", "Marriott", "Hertz"]
+BRAND_STORE_IDS = ["s7", "s8", "s9", "s10", "s11", "s12", "s14", "s15", "s16", "s17", "s18", "s19"]   # s13 (REI) is retired
+ORIGINAL_STORE_IDS = {s["id"] for s in engine.load_stores()}
+ORIGINAL_OFFER_IDS = {o["id"] for o in engine.load_offers()}
 SAFE_MARKDOWN = re.compile(r"\[[^\[\]()\n]+\]\(#/store/[A-Za-z0-9_-]+\)")
 OFFER_KEYS = {"id", "store_id", "type", "headline_bps", "groups", "excluded_items", "annual_cap_cents",
               "stackable_with_cash_back", "expires_on", "as_of", "terms"}
@@ -36,11 +39,12 @@ def brands_on(monkeypatch):
 
 
 def brand_stores():
-    return load_stores()[len(engine.load_stores()):]
+    """With the brands on, the served catalog IS the brand catalog."""
+    return load_stores()
 
 
 def brand_offers():
-    return load_offers()[len(engine.load_offers()):]
+    return load_offers()
 
 
 def stores_by_id(result):
@@ -61,26 +65,35 @@ def test_these_values_turn_the_brand_offers_off(value):
                                       {BRANDS_VARIABLE: "anything else"}])
 def test_they_are_on_unless_explicitly_switched_off(environ):
     assert brand_offers_on(environ) is True
-    assert len(load_stores(environ)) == len(engine.load_stores()) + 13
+    assert [s["name"] for s in load_stores(environ)] == BRAND_NAMES
 
 
 def test_it_reads_the_process_environment_by_default(monkeypatch):
     monkeypatch.setenv(BRANDS_VARIABLE, "off")
     assert load_stores() == engine.load_stores()
     monkeypatch.delenv(BRANDS_VARIABLE)
-    assert len(load_stores()) == len(engine.load_stores()) + 13
+    assert [s["name"] for s in load_stores()] == BRAND_NAMES
 
 
-# ---------------------------------------------------------------- the merge
-def test_the_original_stores_and_offers_come_first_and_unchanged():
-    assert load_stores()[:6] == engine.load_stores()
-    assert load_offers()[:10] == engine.load_offers()
-    assert [s["id"] for s in load_stores()] == [f"s{i}" for i in range(1, 20)]
+# ---------------------------------------------------------------- the two catalogs
+def test_with_the_brands_on_none_of_the_original_stores_or_offers_are_served():
+    assert not {s["id"] for s in load_stores()} & ORIGINAL_STORE_IDS
+    assert not {o["id"] for o in load_offers()} & ORIGINAL_OFFER_IDS
+    assert not any(s["name"] in {"Fjordline Outdoors", "Voltage Electronics", "Inkwell Books", "Cobalt Shoes",
+                                 "Harbor & Hearth", "Lumen Laptops"} for s in load_stores())
 
 
-def test_the_thirteen_brands_are_the_ones_planned():
+def test_with_the_brands_off_exactly_the_original_data_is_served():
+    off = {BRANDS_VARIABLE: "off"}
+    assert load_stores(off) == engine.load_stores() and load_offers(off) == engine.load_offers()
+
+
+def test_the_twelve_brands_are_the_ones_planned_and_rei_is_gone():
     assert [s["name"] for s in brand_stores()] == BRAND_NAMES
-    assert len(brand_offers()) == 24
+    assert [s["id"] for s in brand_stores()] == BRAND_STORE_IDS
+    assert len(brand_offers()) == 22
+    assert "s13" not in {s["id"] for s in brand_stores()}
+    assert not {"o22", "o23"} & {o["id"] for o in brand_offers()}              # REI's offers are retired too
 
 
 def test_ids_are_unique_and_every_offer_belongs_to_a_known_store():
@@ -88,7 +101,7 @@ def test_ids_are_unique_and_every_offer_belongs_to_a_known_store():
     assert len({s["id"] for s in stores}) == len(stores)
     assert len({o["id"] for o in offers}) == len(offers)
     assert {o["store_id"] for o in offers} <= {s["id"] for s in stores}
-    assert {o["id"] for o in brand_offers()}.isdisjoint({o["id"] for o in engine.load_offers()})
+    assert {o["id"] for o in brand_offers()}.isdisjoint(ORIGINAL_OFFER_IDS)
 
 
 # ---------------------------------------------------------------- what a brand offer looks like
@@ -212,7 +225,8 @@ def test_the_all_offers_tool_lists_brand_offers_with_safe_links():
     assert links["o10"] == "[Apple: 20% off](#/store/s7)"
     assert links["o28"] == "[Barnes & Noble: 20% off](#/store/s17)"
     assert links["o18"] == "[Levi's: 20% off](#/store/s11)"
-    assert links["o22"] == "[REI: 5% cash back](#/store/s13)"
+    assert links["o32"] == "[Hertz: 12% off](#/store/s19)"
+    assert links["o25"] == "[IKEA: 10% off](#/store/s15)"
     assert all(SAFE_MARKDOWN.fullmatch(link) for link in links.values())
 
 
@@ -223,9 +237,9 @@ def test_a_store_page_tool_call_for_a_brand_store_works():
     assert r["offers"][0]["annual_cap_dollars"] == "$2,500.00"
 
 
-def test_the_best_deals_list_still_starts_with_the_biggest_original_offer():
+def test_the_best_deals_list_starts_with_the_biggest_brand_offers():
     offers = dispatch("list_all_eligible_offers", {}, member_id="m_teacher", today=TODAY)["offers"]
-    assert offers[0]["offer_id"] == "o1"                       # Fjordline 30%: no brand offer beats it
+    assert [o["offer_id"] for o in offers[:4]] == ["o10", "o18", "o24", "o28"]   # the four 20% offers, by id
     assert max(o["headline_bps"] for o in brand_offers()) == 2000
 
 
@@ -239,12 +253,12 @@ def sign_in(client, member_id):
     assert client.post("/demo/switch-member", json={"member_id": member_id}).status_code == 200
 
 
-def test_the_discounts_endpoint_lists_every_store_including_the_brands():
+def test_the_discounts_endpoint_lists_the_twelve_brand_stores_and_nothing_else():
     client = TestClient(server.app)
     sign_in(client, "m_teacher")
     body = client.get("/discounts").json()
-    assert [s["store_id"] for s in body["stores"]] == [f"s{i}" for i in range(1, 20)]
-    assert [s["name"] for s in body["stores"][6:]] == BRAND_NAMES
+    assert [s["store_id"] for s in body["stores"]] == BRAND_STORE_IDS
+    assert [s["name"] for s in body["stores"]] == BRAND_NAMES
 
 
 def test_the_estimate_endpoint_knows_a_brand_store_and_the_same_figures_come_back():
@@ -271,6 +285,17 @@ def test_the_assistant_knows_the_brand_stores_when_they_are_on():
     for name in BRAND_NAMES:
         assert name in prompt
     assert "currently viewing s7 (Apple)" in prompt
+    assert "Fjordline Outdoors" not in prompt and "Lumen Laptops" not in prompt
+
+
+def test_with_the_brands_on_an_original_store_is_unknown_to_the_server_and_the_assistant():
+    client = TestClient(server.app)
+    sign_in(client, "m_teacher")
+    assert client.get("/estimate", params={"store_id": "s1", "cart_cents": 20000}).status_code == 400
+    with pytest.raises(UnknownStoreError):
+        validate_store("s1")
+    with pytest.raises(UnknownStoreError):
+        build_system_prompt("s1")
 
 
 def test_the_prompt_says_every_offer_is_invented_even_with_a_real_brand_name():

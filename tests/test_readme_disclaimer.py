@@ -5,7 +5,6 @@ Written before the disclaimer. If a logo is added without updating the disclaime
 import re
 from pathlib import Path
 
-from app import engine
 from app.catalog import load_stores
 
 README = (Path(__file__).resolve().parent.parent / "README.md").read_text(encoding="utf-8")
@@ -41,8 +40,7 @@ def test_it_says_the_offers_are_invented_and_that_no_brand_is_involved():
 
 def test_it_names_every_brand_whose_logo_is_shown():
     text = disclaimer()
-    brand_stores = load_stores({})[len(engine.load_stores()):]
-    with_logo = [s["name"] for s in brand_stores if s.get("logo")]
+    with_logo = [s["name"] for s in load_stores({}) if s.get("logo")]
     assert len(with_logo) == 12
     for name in with_logo:
         assert name in text, name

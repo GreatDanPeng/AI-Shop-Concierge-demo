@@ -97,14 +97,6 @@ const ILLUSTRATIONS: Record<string, ReactNode> = {
     <path className="art-line" d="M30 79 C40 74 48 84 58 79 C68 74 76 84 86 79 C96 74 104 84 114 79 C122 76 128 80 132 79" />
     <line className="art-line" x1="52" y1="60" x2="106" y2="66" />
   </>),
-  backpack: (<>
-    <rect className="art-b" x="34" y="56" width="14" height="28" rx="5" />
-    <rect className="art-b" x="112" y="56" width="14" height="28" rx="5" />
-    <path className="art-a" d="M52 34 C52 18 108 18 108 34 L112 84 C112 88 108 90 104 90 L56 90 C52 90 48 88 48 84 Z" />
-    <rect className="art-c" x="58" y="58" width="44" height="26" rx="5" />
-    <line className="art-line" x1="58" y1="68" x2="102" y2="68" />
-    <path className="art-line" d="M64 24 C64 10 96 10 96 24" />
-  </>),
   jacket: (<>
     <path className="art-a" d="M60 18 L100 18 L120 32 L128 76 L112 78 L110 50 L108 88 L52 88 L50 50 L48 78 L32 76 L40 32 Z" />
     <rect className="art-b" x="66" y="11" width="28" height="9" rx="3" />
