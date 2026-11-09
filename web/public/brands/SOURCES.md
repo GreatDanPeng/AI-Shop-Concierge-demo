@@ -33,13 +33,9 @@ Retrieved 2026-11-08. Files are used as downloaded except where "Changes" says o
 - **Wikimedia Commons** tags these logos "Public domain" because the artwork is too simple to carry a
   copyright. Commons also marks them "trademarked": the trademark rights stay with the owner.
 
-## REI has no logo here
+## REI was dropped
 
-REI's logo is not available as a free file (it only exists on Wikipedia as a restricted "fair use" upload),
-so the REI store keeps its original illustration. To add it, put a logo file you are allowed to use in this
-folder (for example `rei.svg`), set `"logo": "/brands/rei.svg"` for REI in `data/brand_stores.json`, list it
-in the table above, and add REI to the Disclaimer in the README. `tests/test_brand_logos.py` checks every
-step.
+REI's logo is not available as a free file (it only exists on Wikipedia as a restricted "fair use" upload), so REI is not in the demo. To add a brand, put a logo file you are allowed to use in this folder, give the store a `logo` path in `data/brand_stores.json`, list it in the table above, and add the brand to the Disclaimer in the README; `tests/test_brand_logos.py` and `tests/test_readme_disclaimer.py` check every step.
 
 ## Every file is inspected
 
