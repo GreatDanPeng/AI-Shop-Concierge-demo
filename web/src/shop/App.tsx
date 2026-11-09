@@ -113,7 +113,7 @@ export function App({ api, concierge }: { api: ShopApi; concierge: ConciergeLink
           {content}
         </main>
         <footer className="footer">
-          <p>Unofficial concept demo. All stores, offers and members are fictional. Not affiliated with ID.me.</p>
+          <p>Unofficial concept demo. All offers and members are fictional. Brand names are used for illustration only: none of these brands offers these discounts or is affiliated with this demo. Not affiliated with ID.me.</p>
         </footer>
       </div>
     </div>

@@ -23,4 +23,4 @@ def test_questions_reference_real_members_and_stores():
     stores = {s["id"] for s in load_stores()}
     for q in QUESTIONS:
         assert q["member_id"] in members
-        assert q["store_id"] in stores
+        assert q["store_id"] is None or q["store_id"] in stores

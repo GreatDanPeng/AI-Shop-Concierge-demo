@@ -11,8 +11,9 @@ from __future__ import annotations
 
 from datetime import date
 
+from .catalog import load_offers, load_stores
 from .engine import (DEMO_TODAY, best_combination, eligible_offers,
-                     explain_ineligibility, load_members, load_offers, load_stores)
+                     explain_ineligibility, load_members)
 from .links import add_link, link_applied_offers
 from .money import format_cents, with_dollars
 
@@ -74,6 +75,8 @@ TOOLS = [
 
 
 def _public_offer(o: dict) -> dict:
+    # The date stamped on an offer in the data files is bookkeeping, not "today", so it is not passed on:
+    # the model must see one date only, the tool result's own as_of.
     return {
         "offer_id": o["id"],
         "store_id": o["store_id"],
@@ -86,7 +89,6 @@ def _public_offer(o: dict) -> dict:
                                if o.get("annual_cap_cents") is not None else None),
         "stackable_with_cash_back": o.get("stackable_with_cash_back", True),
         "expires_on": o.get("expires_on"),
-        "as_of": o.get("as_of"),
         "terms_untrusted": o.get("terms", ""),
     }
 

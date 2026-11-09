@@ -38,6 +38,7 @@ export type StoreMatches = {
   art: string | null; // which built-in illustration to draw
   image: string | null; // a licensed photo you added under web/public/stores/ (see docs/IMAGES.md)
   image_credit: string | null;
+  logo?: string | null; // the brand's own logo file under /brands/, when the store has one
   offers: Offer[];
 };
 export type Discounts = { as_of: string; stores: StoreMatches[] };

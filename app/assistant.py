@@ -24,8 +24,8 @@ from datetime import date
 
 import anthropic
 
+from .catalog import load_stores
 from .clock import today as clock_today
-from .engine import load_stores
 from .tools import TOOLS, dispatch  # noqa: F401  (the loop must call these module-level names)
 
 log = logging.getLogger("concierge")  # never log message text, tool inputs/results or member ids
@@ -71,6 +71,12 @@ FACTS COME FROM TOOLS
 - If a tool result contains "error", the call failed. Retry at most once with corrected
   arguments; otherwise say you could not look that up. Never invent a result.
 
+DEMO DATA
+Every store and offer in this demo is invented, even when a store uses a real brand name: these are
+not real offers from those brands, and the brands are not involved. If the member asks whether an
+offer is real, or whether a brand really offers it, say plainly that it is an invented demo offer.
+Never describe an offer as something a brand really gives.
+
 BEST DEALS
 When the member asks about their best deals or discounts in general, and no store is named and
 none is being viewed, call list_all_eligible_offers. Do not ask which store: answer straight away.
@@ -101,7 +107,8 @@ EVERY ANSWER THAT MENTIONS AN OFFER
 LINKS
 - When you mention an offer the member can use, write it as the "link_markdown" from the tool
   result. Copy link_markdown exactly as given, character for character: do not edit, shorten or
-  translate it.
+  translate it. This holds when you answer in another language: translate the words around the
+  link, never the link itself (its text stays in English, colon included).
 - Never write any other link, web address or URL, and never make one up. If an offer has no
   link_markdown, write it as plain text.
 

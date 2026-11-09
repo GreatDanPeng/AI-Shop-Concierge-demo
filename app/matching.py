@@ -8,8 +8,9 @@ from __future__ import annotations
 
 from datetime import date, timedelta
 
+from .catalog import load_offers, load_stores
 from .engine import (DEMO_TODAY, VERIFICATION_DAYS, best_combination, explain_ineligibility,
-                     load_offers, load_stores, verification_status)
+                     verification_status)
 from .links import link_applied_offers
 from .money import format_cents, headline_label, with_dollars
 
@@ -78,7 +79,7 @@ def match_offers(member: dict, today: date = DEMO_TODAY, *, stores=None, offers=
     return [
         {"store_id": s["id"], "name": s["name"], "blurb": s.get("blurb", ""),
          "category": s.get("category", "Other"), "art": s.get("art"),
-         "image": s.get("image"), "image_credit": s.get("image_credit"),
+         "image": s.get("image"), "image_credit": s.get("image_credit"), "logo": s.get("logo"),
          "offers": [_match_one(member, o, today) for o in offers if o["store_id"] == s["id"]]}
         for s in stores
     ]

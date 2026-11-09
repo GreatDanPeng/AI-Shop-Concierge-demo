@@ -12,6 +12,7 @@
 
   /* neutrals: content sits on white or soft cards; the accent is for primary buttons and focus only */
   --color-surface: #ffffff;
+  --logo-plate: #ffffff; /* official logos are made for light backgrounds, so this stays white in dark mode too */
   --color-surface-alt: #f5f6fb;
   --color-text: #1c2130;
   --color-text-muted: #566073;

@@ -89,7 +89,7 @@ function FeaturedStrip({ featured }: { featured: Featured[] }) {
         {featured.map(({ store, offer }) => (
           <li key={store.store_id}>
             <a className="featured-card" href={`#/store/${store.store_id}`}>
-              <StoreArt art={store.art} image={store.image} credit={store.image_credit} />
+              <StoreArt art={store.art} image={store.image} credit={store.image_credit} logo={store.logo} />
               <span className="featured-offer">{offerLabel(offer)}</span>
               <span className="featured-store">{store.name}</span>
             </a>
