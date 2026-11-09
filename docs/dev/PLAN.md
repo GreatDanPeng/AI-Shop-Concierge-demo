@@ -1,4 +1,4 @@
-# Roadmap: an AI concierge widget on a demo shopping site (Docker first, AWS later)
+# Roadmap: an AI concierge widget on a demo shopping site (Docker first, GCP later)
 
 > Working notes, kept for history; may be out of date.
 
@@ -30,7 +30,7 @@ Working plan for the concierge demo. The roadmap (M0-M9) comes first. **Appendix
 
 ## Goal
 
-A floating concierge button on the main demo shop. Clicking it opens a chat panel with streamed answers from an assistant that uses tools. The same capability is exposed as a documented `/v1/chat` API, plus a small Python SDK and CLI. First target: a callable demo on Docker; AWS comes after.
+A floating concierge button on the main demo shop. Clicking it opens a chat panel with streamed answers from an assistant that uses tools. The same capability is exposed as a documented `/v1/chat` API, plus a small Python SDK and CLI. First target: a callable demo on Docker; GCP comes after.
 
 I treat the owner's stack list ("could be like...") as a menu, not a spec. Below: what I adopt, what I adapt, and what I defer.
 
@@ -69,7 +69,7 @@ I treat the owner's stack list ("could be like...") as a menu, not a spec. Below
 
 1. **Walking skeleton before depth.** The owner listed the frontend last, but the widget is the end goal and the only thing a reviewer can click. So a minimal widget lands at M2, right after the loop, and later milestones deepen it. If the owner prefers the listed order (platform first), see Question 3.
 2. **Two kinds of auth.** A signed member session decides WHO is asking. An API key identifies the CLIENT app (SDK, CLI, widget). The member id is never in a request body. A key shipped inside browser JavaScript is public, so for the widget it is an identifier; real protection is the session, an origin allowlist and the rate limit.
-3. **Rate limit:** a hand-written token-bucket class (per API key and IP), in memory. It is documented as single-instance only; a shared store is needed once there are several instances (including on Lambda).
+3. **Rate limit:** a hand-written token-bucket class (per API key and IP), in memory. It is documented as single-instance only; a shared store (Memorystore in the planned architecture) is needed once there are several instances (including on Cloud Run).
 4. **Streaming:** `POST /v1/chat/stream`, read in the browser with `fetch` and a stream reader plus a small hand-written SSE parser. `EventSource` cannot POST or send headers, and a GET would put the message in the URL (which gets logged). Events: `delta` (text), `tool` (name only), `done`, `error`. The non-streaming `/v1/chat` stays for the SDK and evals.
 5. **Tools as classes.**
    - `Tool` base class: name, description, a Pydantic args model with `extra="forbid"`, a `read_only` flag, and `run(ctx, args)`.
@@ -100,18 +100,18 @@ I treat the owner's stack list ("could be like...") as a menu, not a spec. Below
 | M7 | 20-30 eval questions (the four user-story personas, product search, cart, injection, privacy, no-guarantee) with `must_call_tool` / `must_not_call_tool` / state checks; JSON report with prompt version and model; `chat_events` stats query | evals plus recorded-transcript regression tests | pass rate |
 | M8 | Python SDK and CLI for `/v1/chat`; README quickstart | SDK tests against the app | dev tools |
 | M9 | GitHub Actions CI/CD; README with architecture, run steps, trade-offs, complexity notes | green CI | polish |
-| Later | AWS (Lambda + API Gateway + RDS + Secrets Manager, with CDK) | n/a | n/a |
+| Later | GCP (Cloud Run behind a load balancer, Identity Platform, Cloud SQL, Memorystore, Secret Manager, Vertex AI; see the planned architecture in the README) | n/a | n/a |
 
 How this maps to the owner's priority list: platform base is M3; AI core is M1, M4 and M5; Docker and CI are M2 and M9; eval and logging are M7; frontend and SDK are M2, M6 and M8.
 
-## What to keep in mind now for AWS later
+## What to keep in mind now for GCP later
 
-- Stateless app, config only from env (Secrets Manager injects later), no local file writes, a health endpoint.
-- **SSE on Lambda is the risky part.**
-  - API Gateway REST APIs gained response streaming in Nov 2025 (set the integration to STREAM; Lambda proxy integration) ([AWS announcement](https://aws.amazon.com/about-aws/whats-new/2025/11/api-gateway-response-streaming-rest-apis/)).
-  - For Python, the sources I found point to Lambda Web Adapter rather than Mangum; I found nothing confirming that Mangum streams through it. One developer reported small SSE events being held in a buffer ([report](https://www.rjesh.com/posts/the-curious-case-of-sse/)). That is a single report; measure time-to-first-byte before committing.
-  - Fallback if it fails: ECS Fargate or App Runner, which stream normally.
-- RDS from Lambda needs a VPC and connection pooling (RDS Proxy). The in-memory rate limiter does not work across Lambda instances.
+- Stateless app, config only from env (Secret Manager injects later), no local file writes, a health endpoint.
+- **Streaming through the front door is the part to measure.**
+  - Cloud Run supports HTTP response streaming and Server-Sent Events ([Google Cloud blog](https://cloud.google.com/blog/products/serverless/cloud-run-now-supports-http-grpc-server-streaming); the [Cloud Run MCP guide](https://docs.cloud.google.com/run/docs/host-mcp-servers) relies on the same built-in streaming).
+  - The planned design puts a load balancer and a CDN in front of Cloud Run. I did not find how they treat streamed responses, so measure time-to-first-byte through the whole path before committing.
+- Cloud SQL from Cloud Run: with Cloud Run's built-in connection, each instance is limited to 100 connections per database, and the total grows as the service scales out ([doc](https://docs.cloud.google.com/sql/docs/postgres/connect-run)). Use a small pool per instance and cap the maximum number of instances (managed connection pooling is an option, [doc](https://docs.cloud.google.com/sql/docs/postgres/managed-connection-pooling)), so the total stays under the database's `max_connections`.
+- The in-memory rate limiter does not work across Cloud Run instances; the plan moves it to Memorystore, which Cloud Run reaches through Direct VPC egress ([doc](https://docs.cloud.google.com/memorystore/docs/redis/connect-redis-instance-cloud-run)).
 
 ## Risks
 

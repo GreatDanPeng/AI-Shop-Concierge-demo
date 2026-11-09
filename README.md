@@ -49,6 +49,20 @@ No Docker, env vars, widget embedding: [docs/CONFIGURATION.md](docs/CONFIGURATIO
 - 20 questions run through the real assistant loop: 60/60 tests passed ([docs/EVALS.md](docs/EVALS.md)). 
 - 5 real model mistakes and how each was fixed: [docs/AI_MISTAKES.md](docs/AI_MISTAKES.md).
 
+## Architecture
+
+Today: a React page and widget, one FastAPI server, five read-only tools.
+
+<p align="center">
+  <img src="docs/screenshots/architecture-today.png" alt="Architecture today: shop page and widget, FastAPI, matching service, AI assistant with read-only tools, rules engine" width="720" />
+</p>
+
+Planned on GCP: Cloud Run behind a load balancer, sign-in with Identity Platform, Cloud SQL with pgvector (a `search_history` tool), Memorystore, Vertex AI.
+
+<p align="center">
+  <img src="docs/screenshots/architecture-planned.png" alt="Planned architecture on GCP: load balancer, sign-in, Cloud Run, Cloud SQL, Memorystore, Secret Manager, Vertex AI, async embedding of purchases" width="720" />
+</p>
+
 ## Docs
 
 - [Design](docs/DESIGN.md) 
@@ -65,7 +79,7 @@ No Docker, env vars, widget embedding: [docs/CONFIGURATION.md](docs/CONFIGURATIO
 - [ ] Rate limit and a time limit per question
 - [ ] Conversation history and streamed answers
 - [ ] A database (offers are JSON files) and real store data
-- [ ] Cloud deployment with AWS/GCP
+- [ ] Cloud deployment on GCP (planned architecture above)
 - [ ] Widget on another origin (CORS, link base)
 
 ## Disclaimer
