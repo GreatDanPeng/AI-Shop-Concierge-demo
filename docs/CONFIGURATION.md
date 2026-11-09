@@ -3,6 +3,7 @@
 # Configuration
 
 ## Running without Docker
+Python 3.13 and Node 22 are what the Docker image and CI use.
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt

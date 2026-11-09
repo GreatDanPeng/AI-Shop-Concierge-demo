@@ -25,8 +25,8 @@ Working plan for the concierge demo. The roadmap (M0-M9) comes first. **Appendix
 | Brand logos | all 12 brand stores show the brand's own logo (6 from Simple Icons, 6 from Wikimedia Commons; REI was dropped, no free file) on a white plate, with the illustration as the fallback; README Disclaimer; sources and licences in `web/public/brands/SOURCES.md` | Done (pytest and web suites green, real-browser check). PR #4 |
 | UI redesign, stage 2 | Chat thread shared by widget and page, split view with draggable divider, contextual toolbar | Planned, not built (`docs/UI_DESIGN.md` asks for a confirmation before this stage) |
 | M1 Steps 5-7 | Eval runner with repeats, labelled results and a JSON report; `must_call_tool`, `must_not_call_tool` and server-link checks; 20 questions; a live run | Done (PR #4; 683 Python tests at the time). First run 58/60, second 60/60 after two fixes found by the run; q14 alone 8/10 |
-| M2 | Walking skeleton (page + widget) is done in the MVP; Dockerfile and compose are not | Docker not started |
-| M3-M9 | Postgres, tool classes, RAG, streaming, evals, SDK and CLI, CI | Not started |
+| M2 | Walking skeleton (page + widget) is done in the MVP; Dockerfile, `.dockerignore` and compose file are added | Done on branch `chore/reviewer-ready` (image builds, container healthy, 745 tests pass inside it) |
+| M3-M9 | Postgres, tool classes, RAG, streaming, evals, SDK and CLI, CI | Not started, except a first GitHub Actions workflow (pytest, web checks, Docker build) on `chore/reviewer-ready` |
 
 ## Goal
 
