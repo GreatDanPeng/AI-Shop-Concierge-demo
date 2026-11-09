@@ -19,8 +19,10 @@ def disclaimer():
     return " ".join(" ".join(lines[start:end + 1]).split())
 
 
-def test_the_disclaimer_is_near_the_top_of_the_readme():
-    assert "Disclaimer:" in "\n".join(README.splitlines()[:12])
+def test_the_disclaimer_is_the_last_section_of_the_readme():
+    headings = [line for line in README.splitlines() if line.startswith("## ")]
+    assert headings[-1] == "## Disclaimer"
+    assert "Disclaimer:" in README.split("## Disclaimer", 1)[1]
 
 
 def test_it_says_what_the_project_is_for_who_owns_the_marks_and_that_there_is_no_commercial_use():

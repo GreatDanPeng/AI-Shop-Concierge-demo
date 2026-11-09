@@ -3,7 +3,15 @@
 # Design
 
 ## How it works
-The diagram is in the [README](../README.md#how-it-works).
+```
+ browser:  shop page (React)  +  widget.js (React in a shadow root)
+              |  GET /me /discounts /estimate        |  POST /chat
+              v                                      v
+ FastAPI (same origin, cookie says WHO)  ---->  assistant loop ---> model (tool use)
+              |                                      |
+        matching service                        tools (read-only)
+              +--------------> rules engine <---------+
+```
 - **Identity matching** (`app/matching.py`) is plain code: it asks the rules engine, per offer, whether the member qualifies and why not. No model is involved.
 - **The assistant** (`app/assistant.py`) can only use the read-only tools in `app/tools.py`, always for the member the server bound to the session.
 
