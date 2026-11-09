@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    # The key is optional: without .env (or with empty keys) the shop works and the concierge says it is not set up.
+    env_file:
+      - path: .env
+        required: false

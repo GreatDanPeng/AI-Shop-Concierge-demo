@@ -1,0 +1,18 @@
+# Never in the image: secrets, local environments, caches, reports, local builds.
+.git
+.github
+.env
+.env.*
+!.env.example
+.venv
+node_modules
+web/node_modules
+**/node_modules
+__pycache__
+**/__pycache__
+.pytest_cache
+evals/results
+web/dist
+web/public/widget.js
+.DS_Store
+.claude
