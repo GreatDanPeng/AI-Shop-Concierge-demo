@@ -1,6 +1,6 @@
 # Store pictures
 
-Every store tile and store page shows a picture, chosen in this order: a **licensed photo** you added (below), then the brand's own **logo** (every brand store has one), then an **original illustration** drawn in code from the design tokens, so it works in light and dark. The six original stores have a tent, headphones, books, a sneaker, a lamp and a laptop; each brand store also has its own everyday object (devices, a phone, a TV, a yoga mat and top, jeans, a running shoe, a backpack, a jacket, a sofa, a toolbox, an open book, a hotel, a car), which is the fallback when its logo cannot load. Illustrations show objects only: no logos and no brand marks.
+Every store tile and store page shows a picture, chosen in this order: a **licensed photo** you added (below), then the brand's own **logo** (every brand store has one), then an **original illustration** drawn in code from the design tokens, so it works in light and dark. The six original stores have a tent, headphones, books, a sneaker, a lamp and a laptop; each brand store also has its own everyday object (devices, a phone, a TV, a yoga mat and top, jeans, a running shoe, a jacket, a sofa, a toolbox, an open book, a hotel, a car), which is the fallback when its logo cannot load. Illustrations show objects only: no logos and no brand marks.
 
 ## Brand logos
 
@@ -36,4 +36,4 @@ If the file is missing or cannot be loaded, the illustration comes back by itsel
 ## Notes
 
 - The picture, logo or illustration, is decorative (`alt=""`): the store's name is written next to it, so a screen reader does not read it twice.
-- A real product catalogue with product photos is a later milestone (see `docs/PLAN.md`, M3 and M4).
+- A real product catalogue with product photos is a later milestone (see `docs/dev/PLAN.md`, M3 and M4).

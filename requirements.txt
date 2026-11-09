@@ -1,5 +1,9 @@
-fastapi
-uvicorn
-pydantic
-anthropic
-pytest
+# Direct dependencies, pinned to the versions the tests last passed with (Python 3.13).
+# Their own dependencies are not pinned. httpx2 is imported by the tests and also comes with anthropic.
+fastapi==0.162.2
+uvicorn==0.54.0
+pydantic==2.14.3
+anthropic==2.6.0
+httpx2==2.16.0
+pytest==9.2.0
+pytest-cov==7.1.0

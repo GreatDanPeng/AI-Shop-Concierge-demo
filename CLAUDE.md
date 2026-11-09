@@ -4,9 +4,12 @@ Unofficial concept demo of a shopping assistant. All data is fake. Not affiliate
 
 ## Commands
 - Tests: `pytest -q`, and for the page `cd web && npm test` (also `npm run typecheck`)
+- Coverage (Python; CI uploads it to Codecov): `pytest -q --cov --cov-report=term-missing` (add `--cov-report=xml` for `coverage.xml`; `.coveragerc` measures `app` and `evals` and skips `tests`)
 - Server: `uvicorn app.server:app --reload` (loads `.env` at start; serves `web/dist`)
 - Build the page: `cd web && npm run build` (builds `widget.js` first, then the shop page)
-- Evals (not wired yet): `python -m evals.run_evals`
+- Evals (needs a key in `.env` and costs a little): `python -m evals.run_evals [--repeat N] [--only q1,q14] [--live-date]`; reports go to `evals/results/` (git-ignored); details in `docs/EVALS.md`
+- Docker: `docker compose up --build` (serves http://localhost:8000; `.env` is optional), `docker compose run --rm app pytest -q`, `docker build -t ai-shop-concierge .`
+- CI (`.github/workflows/ci.yml`; the only secret is `CODECOV_TOKEN`, no live model) runs three jobs, so run the same commands locally before a PR: `python` = `pip install -r requirements.txt && pytest -q --cov --cov-report=xml`, then the Codecov upload; `web` = `cd web && npm ci && npm run typecheck && npm test && npm run build`; `docker` = `docker build -t ai-shop-concierge .`
 
 ## Rules
 - Money is integer cents. Percentages are basis points. Round half-up with `pct_half_up`. Never use floats for money and never use `round()`.
