@@ -1,14 +1,16 @@
 # AI Shop Concierge demo 
 
+> **Disclaimer:** This project is intended solely for personal learning and technical practice. The trademarks, logos and brand elements of Apple, Samsung, Nike, The North Face, IKEA, Marriott, Best Buy, lululemon, Levi's, The Home Depot, Barnes & Noble and Hertz used herein are the property of their respective owners (for example, the Apple trademarks and brand elements are the property of Apple Inc.) and are not used for any commercial purposes. All offers shown are invented; no sponsorship, endorsement or affiliation with any brand, or with ID.me, is implied.
+
 ## What this is
 A small shopping demo that matches discounts to who you are. Pick a demo member and the home page greets you and shows, store by store, only the offers you qualify for. Not seeing one you expected? Ask the concierge why (verification expired, annual cap reached, group not verified). The concierge is an AI assistant, reachable from the ask box on the home page or from the floating button; it answers without making up discounts and without exposing other members' data.
 
 ![Home as a military member: greeting, the ask box with three small prompts, and only the offers you qualify for](docs/screenshots/home-light.png)
-![All 19 stores for a teacher: the 13 invented brand offers each have their own illustration](docs/screenshots/brands-grid.png)
+![All 19 stores for a teacher: the 13 invented brand offers show each brand's logo (REI shows an illustration)](docs/screenshots/brands-grid.png)
 ![A store page with the concierge widget](docs/screenshots/store-page.png)
 ![Dark mode (it follows the system)](docs/screenshots/dark-widget.png)
 
-**Familiar names, invented offers.** To make a demo recognisable, the catalog includes 13 well-known brands (Apple, lululemon, Nike, Samsung, IKEA and others) with offers I made up, for example teachers get 20% off a new Apple computer and military members get 15% off at lululemon. None of these brands offers these discounts and none is involved: the page footer, every one of these stores' descriptions and the concierge all say so. Brand names are plain text; there are no logos or brand photos, and each store has an original illustration. Set `CONCIERGE_BRAND_OFFERS=off` to leave only the six original invented stores.
+**Familiar names, invented offers.** To make a demo recognisable, the catalog includes 13 well-known brands (Apple, lululemon, Nike, Samsung, IKEA and others) with offers I made up, for example teachers get 20% off a new Apple computer and military members get 15% off at lululemon. None of these brands offers these discounts and none is involved: the page footer, every one of these stores' descriptions and the concierge all say so. Each brand store shows the brand's own logo where a free file exists (12 of the 13; REI keeps an original illustration, which is also the fallback if a logo cannot load); the logos are their owners' trademarks, so see the Disclaimer above and `web/public/brands/SOURCES.md` for where each came from. There are no brand photos. Set `CONCIERGE_BRAND_OFFERS=off` to leave only the six original invented stores.
 
 ## Status
 | Part | State |
@@ -22,7 +24,7 @@ A small shopping demo that matches discounts to who you are. Pick a demo member 
 | Shop page redesign, stage 2 (split view, contextual toolbar) | Waiting for your OK |
 | Floating concierge widget (`widget.js`) | Done (MVP, answers arrive whole, not streamed). Offers in answers are links to the store page; the window shows only the title, the suggestions, the messages and the input |
 | Live "as of" date | Done: today's real date, or the one in `CONCIERGE_TODAY` |
-| Invented offers under 13 familiar brand names, each with its own illustration | Done: on by default, `CONCIERGE_BRAND_OFFERS=off` turns them off |
+| Invented offers under 13 familiar brand names, each with its logo (12) or an illustration | Done: on by default, `CONCIERGE_BRAND_OFFERS=off` turns them off |
 | "Show my best deals" with no store chosen | Done: one tool call (`list_all_eligible_offers`) lists up to five offers, largest percentage first, as links |
 | Eval run and pass rate | Done: `python -m evals.run_evals` (20 questions); results in the Evals section |
 | AI mistakes log | 2 real entries |
@@ -82,7 +84,7 @@ The page can then call `window.Concierge.setStore(id, name)`, `.open()`, `.close
 
 8. **Only what you qualify for.** The page never shows an offer you do not qualify for, and hides a store with none; the concierge explains why an offer is missing.
 9. **Tokens, not literals.** Every colour, radius, spacing step, shadow, font size and motion duration lives in `web/src/design/tokens.css` (light, dark, reduced motion). A test fails if one appears anywhere else, and others check AA contrast in both themes.
-11. **Invented offers under familiar names, kept honest.** The brand offers live in their own files (`data/brand_stores.json`, `data/brand_offers.json`) and are merged by `app/catalog.py`; the rules engine is untouched and every test but one file runs on the original six stores. Each brand store's description says the offers are invented, the footer says no brand offers these discounts, and the concierge's rules tell it to say so if asked.
+11. **Invented offers under familiar names, kept honest.** The brand offers live in their own files (`data/brand_stores.json`, `data/brand_offers.json`) and are merged by `app/catalog.py`; the rules engine is untouched and every test but one file runs on the original six stores. Each brand store's description says the offers are invented, the footer says no brand offers these discounts, and the concierge's rules tell it to say so if asked. Logos are the owners' trademarks, kept in `web/public/brands/` with their sources and licence tags in `SOURCES.md`; a disclaimer is not permission, so check each brand's own guidelines before using them anywhere else, and `logo: null` brings a store's illustration back.
 10. **The server writes the links.** When the concierge names an offer you can use, it copies a ready-made link (`link_markdown`, from `app/links.py`) such as `[Cobalt Shoes: 4% cash back](#/store/s4)`, which opens that store page in this shop. The model never builds an address, offers you cannot use get no link, and the page turns a link into a link only when its address is exactly `#/store/<id>`; anything else (`https://...`, `javascript:`, `..`) stays visible text. This stops an offer's untrusted terms text from steering the model into a bad link.
 
 ## Design
@@ -114,7 +116,7 @@ What the run found, both logged in [docs/AI_MISTAKES.md](docs/AI_MISTAKES.md): l
 - There is no overall time limit per question: normally 1 to 4 seconds, but a stuck model API could hold a request for minutes.
 - Prompts go to OpenRouter and the model's host. That is fine for fake data only.
 - Each question is answered on its own (the server keeps no conversation history), and answers arrive whole rather than streamed.
-- The pictures are illustrations, not photos, until you add licensed ones.
+- Store pictures are the brands' logos where a free file exists, otherwise original illustrations; there are no photos until you add licensed ones. The logos belong to their owners (see the Disclaimer) and a brand can ask for one to be removed.
 - The demo data ages with the real calendar. Offer o9 (Lumen Laptops 12%) ends 2026-12-31; Avery's nurse verification expires 2027-03-01, Riley's military one 2027-05-10, Morgan's teacher one 2027-09-01 (Sam's student verification has already expired). Set `CONCIERGE_TODAY` to keep a demo or an eval still.
 - "Best deals" are ordered by percentage, not by money saved (a 30% discount and a 4% cash back are different kinds of saving); the concierge says so and offers to work out a cart total. Asked with no store chosen, it lists up to five at once (40 of 40 live runs).
 

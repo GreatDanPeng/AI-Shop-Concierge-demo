@@ -20,7 +20,7 @@ Unofficial concept demo of a shopping assistant. All data is fake. Not affiliate
 - Do not log message content or personal data. Do not put real keys anywhere: use `.env` (git-ignored).
 - Do not edit existing tests to make them pass. If a test is wrong, say so and ask.
 - No real ID.me logos, styling or page copies. No scraping. No real member data.
-- Brand names (Apple, lululemon, ...) appear as plain text on invented offers only: no logos, no brand photos, and every surface (footer, store description, the concierge) says the offers are invented.
+- Brand names appear on invented offers only. A brand's logo may be shown only from the files in `web/public/brands/` (sources and licences in `SOURCES.md`); never fetch logos at runtime or with a script, no brand photos, and keep the README Disclaimer in step with the logos shown (a test checks it). Every surface (footer, store description, the concierge) still says the offers are invented.
 
 ## How to work
 1. Plan first (Plan Mode) and wait for approval.
