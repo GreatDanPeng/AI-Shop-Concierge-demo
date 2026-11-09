@@ -27,3 +27,8 @@ web/public/widget.js
 
 # Eval run reports (every answer from a real model run; fake data, but local only)
 evals/results/
+
+# Coverage reports (pytest --cov)
+.coverage
+coverage.xml
+htmlcov/
