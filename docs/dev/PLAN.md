@@ -1,6 +1,8 @@
 # Roadmap: an AI concierge widget on a demo shopping site (Docker first, AWS later)
 
-Working plan for the concierge demo. The roadmap (M0-M9) comes first. **Appendix A** is milestone M1 (assistant loop and evals) with its step-by-step list, and **Appendix B** is the spec for the offers part of the M3 seeder. It was written as a working plan between the repo owner and the AI assistant, so "you" means the owner.
+> Working notes, kept for history; may be out of date.
+
+Working plan for the concierge demo. The roadmap (M0-M9) comes first. **Appendix A** is milestone M1 (assistant loop and evals) with its step-by-step list, and **Appendix B** is the spec for the offers part of the M3 seeder. It was written as a working plan by the repo owner together with an AI assistant; "the owner" below is the repo owner.
 
 ## Progress (as of 2026-11-08)
 
@@ -8,21 +10,21 @@ Working plan for the concierge demo. The roadmap (M0-M9) comes first. **Appendix
 | --- | --- | --- |
 | M1 Step 0 | `.gitignore`, virtualenv, baseline | Done (PR #1) |
 | M1 Step 1 | `list_store_offers` tool | Done (PR #2) |
-| M1 Step 2 | Failing assistant tests and a stub `app/assistant.py` | Done on branch `feat/assistant-skeleton`, not committed yet |
+| M1 Step 2 | Failing assistant tests and a stub `app/assistant.py` | Done (PR #3, together with the assistant loop) |
 | M1 Step 3 | Config checks, client builder, store validation, system prompt | Done |
 | M1 Step 4 | The tool-use loop in `run_assistant` | Done (tests with a fake client, the real SDK over a mock transport, and live) |
 | Cheap-model testing | DeepSeek through OpenRouter, chosen by `OPENROUTER_*` or `LLM_PROVIDER` | Done; live checks pass |
 | MVP block 1 | `.env` loader, provider selection, identity matching service and API, wired `/chat` | Done |
 | Money bug and edge-case pass | Ready-made dollar strings; broken upstream, debug logs, damaged `.env`, odd prompts and amounts | Done; findings in `docs/AI_MISTAKES.md` |
 | MVP block 2 | React + Vite + TypeScript shop page and the embeddable `widget.js` | Done |
-| MVP block 3 | End to end in a real browser (headless Chrome, 28 checks), README, CLAUDE.md | Done; not yet committed |
-| UI redesign, stage 1 | Design tokens, sidebar, home with ask box and suggestions, store tiles with illustrations, store pages, dark mode, qualified-offers-only, widget restyle | Done (290 web tests, 56 real-browser checks). Later tweaks at your request: no light/dark switch (dark follows the system), no as-of line under the greeting, the three prompts are small chips inside the ask box. Not yet committed |
-| Live date, store links, lean widget | `app/clock.py` (real date or `CONCIERGE_TODAY`); the server writes `link_markdown` for offers a member can use and the page renders only `#/store/<id>` links; the concierge window shows only title, suggestions, messages and input | Done (354 web tests, 62 real-browser checks, 13 live runs). Not yet committed |
-| Best deals with no store | New read-only tool `list_all_eligible_offers` plus a prompt rule; the concierge answers "Show my best deals" straight away instead of asking which store | Done (494 Python tests, 64 real-browser checks, 40 of 40 live runs called the tool and listed valid links). Not yet committed. An eval question for it is not added: `tests/test_evals.py` requires a real `store_id` |
-| Brand offers for demos | `app/catalog.py` serves 12 invented brand stores (22 offers) instead of the original six, on by default, `CONCIERGE_BRAND_OFFERS=off` for the original six; 12 original illustrations as the logo fallback; footer, store blurbs and the concierge's rules say the offers are invented | Done (561 Python tests, 395 web tests, 72 real-browser checks). Not yet committed |
-| Brand logos | all 12 brand stores show the brand's own logo (6 from Simple Icons, 6 from Wikimedia Commons; REI was dropped, no free file) on a white plate, with the illustration as the fallback; README Disclaimer; sources and licences in `web/public/brands/SOURCES.md` | Done (pytest and web suites green, real-browser check). Not yet pushed |
-| UI redesign, stage 2 | Chat thread shared by widget and page, split view with draggable divider, contextual toolbar | Waits for your OK, as `docs/UI_DESIGN.md` asks |
-| M1 Steps 5-7 | Eval runner with repeats, labelled results and a JSON report; `must_call_tool`, `must_not_call_tool` and server-link checks; 20 questions; a live run | Done on branch `feat/wire-evals` (683 Python tests). First run 58/60, second 60/60 after two fixes found by the run; q14 alone 8/10. Not yet pushed |
+| MVP block 3 | End to end in a real browser (headless Chrome, 28 checks), README, CLAUDE.md | Done (PR #3) |
+| UI redesign, stage 1 | Design tokens, sidebar, home with ask box and suggestions, store tiles with illustrations, store pages, dark mode, qualified-offers-only, widget restyle | Done (290 web tests, 56 real-browser checks). Later tweaks: no light/dark switch (dark follows the system), no as-of line under the greeting, the three prompts are small chips inside the ask box. PR #3 |
+| Live date, store links, lean widget | `app/clock.py` (real date or `CONCIERGE_TODAY`); the server writes `link_markdown` for offers a member can use and the page renders only `#/store/<id>` links; the concierge window shows only title, suggestions, messages and input | Done (354 web tests, 62 real-browser checks, 13 live runs). PR #3 |
+| Best deals with no store | New read-only tool `list_all_eligible_offers` plus a prompt rule; the concierge answers "Show my best deals" straight away instead of asking which store | Done (494 Python tests, 64 real-browser checks, 40 of 40 live runs called the tool and listed valid links). PR #3. Eval questions q11 and q12 for it came with PR #4, once a question could have no store |
+| Brand offers for demos | `app/catalog.py` serves 12 invented brand stores (22 offers) instead of the original six, on by default, `CONCIERGE_BRAND_OFFERS=off` for the original six; 12 original illustrations as the logo fallback; footer, store blurbs and the concierge's rules say the offers are invented | Done (561 Python tests, 395 web tests, 72 real-browser checks). PR #4 |
+| Brand logos | all 12 brand stores show the brand's own logo (6 from Simple Icons, 6 from Wikimedia Commons; REI was dropped, no free file) on a white plate, with the illustration as the fallback; README Disclaimer; sources and licences in `web/public/brands/SOURCES.md` | Done (pytest and web suites green, real-browser check). PR #4 |
+| UI redesign, stage 2 | Chat thread shared by widget and page, split view with draggable divider, contextual toolbar | Planned, not built (`docs/UI_DESIGN.md` asks for a confirmation before this stage) |
+| M1 Steps 5-7 | Eval runner with repeats, labelled results and a JSON report; `must_call_tool`, `must_not_call_tool` and server-link checks; 20 questions; a live run | Done (PR #4; 683 Python tests at the time). First run 58/60, second 60/60 after two fixes found by the run; q14 alone 8/10 |
 | M2 | Walking skeleton (page + widget) is done in the MVP; Dockerfile and compose are not | Docker not started |
 | M3-M9 | Postgres, tool classes, RAG, streaming, evals, SDK and CLI, CI | Not started |
 
@@ -30,11 +32,11 @@ Working plan for the concierge demo. The roadmap (M0-M9) comes first. **Appendix
 
 A floating concierge button on the main demo shop. Clicking it opens a chat panel with streamed answers from an assistant that uses tools. The same capability is exposed as a documented `/v1/chat` API, plus a small Python SDK and CLI. First target: a callable demo on Docker; AWS comes after.
 
-I treat your stack list ("could be like...") as a menu, not a spec. Below: what I adopt, what I adapt, and what I defer.
+I treat the owner's stack list ("could be like...") as a menu, not a spec. Below: what I adopt, what I adapt, and what I defer.
 
 ## Where this conflicts with what the repo says today
 
-- README says "Not built (on purpose): real login, a database, deployment, streaming". This roadmap builds a database, Docker deployment and streaming, so README and CLAUDE.md scope lines must be updated (M0, with your OK).
+- README says "Not built (on purpose): real login, a database, deployment, streaming". This roadmap builds a database, Docker deployment and streaming, so README and CLAUDE.md scope lines must be updated (M0, after approval).
 - **Kept as-is:**
   - Money is integer cents and percentages are basis points (also in the new DB columns, so no float or `Numeric` money).
   - Facts come from tools and the engine. The model never computes them.
@@ -63,9 +65,9 @@ I treat your stack list ("could be like...") as a menu, not a spec. Below: what 
                                           Postgres + pgvector  (+ chat_events table)
 ```
 
-## Decisions I recommend (veto any)
+## Decisions I recommend (open to veto)
 
-1. **Walking skeleton before depth.** You listed the frontend last, but the widget is the end goal and the only thing a reviewer can click. So a minimal widget lands at M2, right after the loop, and later milestones deepen it. If you prefer your listed order (platform first), see Question 3.
+1. **Walking skeleton before depth.** The owner listed the frontend last, but the widget is the end goal and the only thing a reviewer can click. So a minimal widget lands at M2, right after the loop, and later milestones deepen it. If the owner prefers the listed order (platform first), see Question 3.
 2. **Two kinds of auth.** A signed member session decides WHO is asking. An API key identifies the CLIENT app (SDK, CLI, widget). The member id is never in a request body. A key shipped inside browser JavaScript is public, so for the widget it is an identifier; real protection is the session, an origin allowlist and the rate limit.
 3. **Rate limit:** a hand-written token-bucket class (per API key and IP), in memory. It is documented as single-instance only; a shared store is needed once there are several instances (including on Lambda).
 4. **Streaming:** `POST /v1/chat/stream`, read in the browser with `fetch` and a stream reader plus a small hand-written SSE parser. `EventSource` cannot POST or send headers, and a GET would put the message in the URL (which gets logged). Events: `delta` (text), `tool` (name only), `done`, `error`. The non-streaming `/v1/chat` stays for the SDK and evals.
@@ -80,15 +82,15 @@ I treat your stack list ("could be like...") as a menu, not a spec. Below: what 
 9. **Embeddings:** Anthropic has no embeddings model; its docs point to Voyage AI ([Claude docs: Embeddings](https://platform.claude.com/docs/en/build-with-claude/embeddings)). So the embedding provider sits behind an interface: the real one is configured by env (model id not hard-coded; check Voyage's current model list first), and tests and CI use a deterministic fake. See Question 1.
 10. **Prompts in versioned files** (`prompts/v1/system.md`, `prompts/v1/examples.md`, loaded by version). The prompt version is logged and written into each eval report. Appendix A's draft prompt is the starting `v1`.
 11. **Frontend:** React + Vite + TypeScript, two entry points: the shop SPA and `widget.js` (an IIFE bundle that mounts inside a Shadow DOM so shop styles cannot break it). Model text is rendered as text or sanitized markdown, never raw HTML. The panel shows "unofficial demo, fake data" and the as-of date. Styling is original (no real ID.me look, per CLAUDE.md).
-12. **Same origin in Docker** (reverse proxy in compose) to avoid CORS and cross-site-cookie problems. A CORS allowlist comes later, only if you want third-party embedding.
+12. **Same origin in Docker** (reverse proxy in compose) to avoid CORS and cross-site-cookie problems. A CORS allowlist comes later, only if third-party embedding is wanted.
 13. **Observability:** stdlib JSON logs plus a `chat_events` table: request id, time, prompt version, model, latency, input and output tokens (from `response.usage`), tool names, counts and error codes, status. Never message text or personal data; the member is stored as a keyed hash or omitted. OpenTelemetry is deferred.
-14. **CI and workflow:** GitHub Actions runs ruff, pytest (Postgres service using a pgvector image), frontend lint/test/build, and the Docker build (push to GHCR on main). Live evals are manual (`workflow_dispatch`) only, because of cost and secrets. Feature branches, PRs, Conventional Commits; I commit only when you ask (CLAUDE.md).
+14. **CI and workflow:** GitHub Actions runs ruff, pytest (Postgres service using a pgvector image), frontend lint/test/build, and the Docker build (push to GHCR on main). Live evals are manual (`workflow_dispatch`) only, because of cost and secrets. Feature branches, PRs, Conventional Commits; I commit only when asked (CLAUDE.md).
 
-## Milestones (each gets its own test-first step list and your OK before I start)
+## Milestones (each gets its own test-first step list, approved before work starts)
 
 | M | What | Proof | Demo-able |
 | --- | --- | --- | --- |
-| M0 | Baseline: `.gitignore`, venv, commit baseline on a branch (when you ask), update README/CLAUDE.md scope | existing tests pass; `.env` ignored | no |
+| M0 | Baseline: `.gitignore`, venv, commit baseline on a branch (when asked), update README/CLAUDE.md scope | existing tests pass; `.env` ignored | no |
 | M1 | **Appendix A:** assistant loop, `list_store_offers`, evals wired | fake-client tests; `curl /chat` | API only |
 | M2 | Walking skeleton: demo shop page, floating button, chat panel (non-streaming) on `/chat`; minimal Dockerfile and compose | component tests; manual click-through | **yes** |
 | M3 | Platform base: Postgres, SQLAlchemy, Alembic; model for stores, products, offers, members, verifications, spend, carts, orders, reviews, chat_events; Faker seeder (offers follow Appendix B's quotas); repository layer; `/v1` products, cart, orders, chat; OpenAPI, error envelope, pagination, API key, rate limit | API tests against Postgres in Docker | Swagger UI |
@@ -100,7 +102,7 @@ I treat your stack list ("could be like...") as a menu, not a spec. Below: what 
 | M9 | GitHub Actions CI/CD; README with architecture, run steps, trade-offs, complexity notes | green CI | polish |
 | Later | AWS (Lambda + API Gateway + RDS + Secrets Manager, with CDK) | n/a | n/a |
 
-How this maps to your priority list: platform base is M3; AI core is M1, M4 and M5; Docker and CI are M2 and M9; eval and logging are M7; frontend and SDK are M2, M6 and M8.
+How this maps to the owner's priority list: platform base is M3; AI core is M1, M4 and M5; Docker and CI are M2 and M9; eval and logging are M7; frontend and SDK are M2, M6 and M8.
 
 ## What to keep in mind now for AWS later
 
@@ -123,9 +125,9 @@ How this maps to your priority list: platform base is M3; AI core is M1, M4 and 
 ## How Appendices A and B fit
 
 - **A = M1**, unchanged. One small note: keep the model call isolated inside the loop, so M6 can swap `create` for streaming without a rewrite.
-- **B** is the spec for the offers portion of the M3 seeder (same quotas and edge cases, now written into Postgres through Faker for names and text). Build its standalone JSON file now only if you want it for M1/M2 testing; otherwise skip it.
+- **B** is the spec for the offers portion of the M3 seeder (same quotas and edge cases, now written into Postgres through Faker for names and text). Build its standalone JSON file now only if it is wanted for M1/M2 testing; otherwise skip it.
 
-## Decisions you confirmed
+## Decisions confirmed by the owner
 
 - **Build order:** skeleton first (M1, then the M2 widget, then the platform).
 - **`add_to_cart`:** acts immediately (bounded, price from DB, member-bound; no checkout tool for the model).
@@ -150,12 +152,12 @@ Based on a read of CLAUDE.md, README.md, `app/{engine,tools,server}.py`, the tes
 
 ## What I found that changes the plan
 
-1. **Offer-discovery gap (needs your decision, Question 1).** `explain_ineligibility` takes an `offer_id`, but the model can only learn offer ids from `get_eligible_offers`, which lists eligible offers only.
+1. **Offer-discovery gap (needed a decision, Question 1; resolved below).** `explain_ineligibility` takes an `offer_id`, but the model can only learn offer ids from `get_eligible_offers`, which lists eligible offers only.
    - q2 (m_student, s2), q3 (m_unverified, s1) and q4 (m_military, s1) are all about an offer the member cannot use.
    - Those offers (o3, o1, o1) never appear in any tool result, so the model would have to guess ids.
    - Without a fix, those evals pass only by luck (the keyword "verif" or "cap" appears in a vague answer).
 2. **`.env` is not git-ignored.** There is no `.gitignore`, and `git check-ignore -v .env` exits 1. CLAUDE.md says `.env` is git-ignored, so this must be fixed before a key is ever written.
-3. **Starter files are untracked.** `app/`, `tests/`, `evals/`, `data/` and `CLAUDE.md` show as `??`. `git diff` will not show my edits to them unless you commit a baseline first.
+3. **Starter files are untracked.** `app/`, `tests/`, `evals/`, `data/` and `CLAUDE.md` show as `??`. `git diff` will not show my edits to them unless a baseline is committed first.
 4. **Environment (updated after Step 0).** The dependencies are now installed in `.venv` (anthropic 2.6.0, fastapi 0.162.2) and the SDK was checked directly.
    - `anthropic.Anthropic()` does not raise when `ANTHROPIC_API_KEY` is missing, so the explicit `ConfigError` check is needed.
    - `anthropic.APIError(message, request, *, body)` takes an `httpx2.Request`; that package is installed with `anthropic`.
@@ -173,7 +175,7 @@ Based on a read of CLAUDE.md, README.md, `app/{engine,tools,server}.py`, the tes
    - Do not send `temperature`/`top_p` (400) or a forced `tool_choice` (400).
    - Handle `stop_reason` of `refusal`, `max_tokens` and `pause_turn`, not just `end_turn`/`tool_use`.
 
-## Design decisions (veto any of these)
+## Design decisions (open to veto)
 
 - **New module `app/assistant.py`** holds the prompt, the loop, config and store validation.
   - Reason: tests and evals can import it without FastAPI, and `server.py` stays a thin web layer.
@@ -270,12 +272,12 @@ Two honest caveats: the prompt is not a security boundary (the real controls are
 
 ## Ordered steps
 
-Each step is small, ends with `pytest -q`, and stops for you to review the diff (per CLAUDE.md). Existing tests are never edited; all new tests go in new files.
+Each step is small, ends with `pytest -q`, and stops for the diff to be reviewed (per CLAUDE.md). Existing tests are never edited; all new tests go in new files.
 
-**Step 0: housekeeping (needs your approval for shell commands)**
+**Step 0: housekeeping (shell commands need approval)**
 - Files: new `.gitignore` (`.env`, `.venv/`, `__pycache__/`, `.pytest_cache/`). Create a venv and `pip install -r requirements.txt`.
 - Proof: `git check-ignore -v .env` prints a rule. The baseline `pytest -q` passes (record the count).
-- Suggest you commit the baseline so later diffs are visible. I won't commit unless you ask.
+- Suggest committing the baseline so later diffs are visible. I won't commit unless asked.
 
 **Step 1: close the discovery gap (assumes Question 1 = A)**
 - Tests first (red): new `tests/test_tools_catalog.py`.
@@ -313,8 +315,8 @@ Each step is small, ends with `pytest -q`, and stops for you to review the diff 
 - `evals/questions.json`: add `must_call_tool` (table below).
 
 **Step 7: manual verification, then README**
-- You run it against the real API (see "Verify by hand").
-- I then update README Status, Run (env vars) and Evals. The pass rate stays "TODO" until it is a real number. `docs/AI_MISTAKES.md` only gets real entries.
+- The owner runs it against the real API (see "Verify by hand").
+- I then update README Status, Run (env vars) and Evals. The pass rate is written down only once it is a real number (it is now: see `docs/EVALS.md`). `docs/AI_MISTAKES.md` only gets real entries.
 
 ## Tests to add (all fake client, no network)
 
@@ -365,8 +367,8 @@ q2-q4 only make sense if Question 1 is answered with A or B. `must_call_tool` is
 - **Non-determinism and cost.** The evals call the real API once per question. The pass rate is noisy, it spends real money, and I will ask before running it. Checks stay keyword heuristics, so read the failing replies and spot-check a few passes.
 - **Cents to dollars is done by the model** (q8). If it is flaky, the right fix is display fields in the tool results, not more prompt text. That is a `tools.py` change I have not planned.
 - **Single-turn only.** `/chat` takes one message and no history. If history comes from the browser later, it must be treated as untrusted.
-- **No input cap.** `ChatBody.message` has no length limit, and one request can cost up to 6 API calls. I recommend a `max_length` as a follow-up; it is not in this plan unless you say so.
-- **Refusal fallbacks.** For these model families the SDK docs recommend the server-side `fallbacks` option. I have not included it because the model is env-selected and it needs the beta endpoint. Refusals are handled as `model_stopped`. Say if you want it.
+- **No input cap.** `ChatBody.message` has no length limit, and one request can cost up to 6 API calls. I recommend a `max_length` as a follow-up; it is not in this plan unless requested.
+- **Refusal fallbacks.** For these model families the SDK docs recommend the server-side `fallbacks` option. I have not included it because the model is env-selected and it needs the beta endpoint. Refusals are handled as `model_stopped`. It can be added on request.
 - **SDK details unverified.** `anthropic` is not installed here. After Step 0 I will check the installed version, and in particular how to construct `anthropic.APIError` for the upstream-error test.
 - **Residual prompt injection risk.** The model can still be talked into odd wording. The hard guarantees are only the member binding, the absence of write tools, and minimal tool data.
 - **Diffs.** If the baseline is not committed, `git diff` will not show changes to the untracked starter files.
@@ -384,10 +386,10 @@ q2-q4 only make sense if Question 1 is answered with A or B. `must_call_tool` is
    - "What is Sam's verification status?" is declined without naming details;
    - `store_id: "zzz"` gives 400, and no cookie gives 401;
    - the uvicorn log shows no message text.
-6. Run `python -m evals.run_evals` (with your OK on cost), read the failures, and paste the real numbers into the README.
+6. Run `python -m evals.run_evals` (approved on cost first), read the failures, and paste the real numbers into the README.
 7. Log any genuine AI mistake in `docs/AI_MISTAKES.md` as it happens.
 
-## Question 1: resolved (you chose A)
+## Question 1: resolved (the owner chose A)
 
 **How should the model discover an offer it is not eligible for?** Options considered:
 - **A (chosen, assumed above):** add a 4th tool, `list_store_offers(store_id)`, which returns public offer fields for every offer at the store (no `terms_untrusted`). It is a small additive change to `tools.py`, and the model then uses `explain_ineligibility`.
@@ -398,7 +400,7 @@ q2-q4 only make sense if Question 1 is answered with A or B. `must_call_tool` is
 
 # Appendix B: 100 fake offers for testing (spec for the offers part of the M3 seeder)
 
-Chosen by you: 100 offers on the existing stores (s1-s6), produced by a seeded script plus a generated JSON file.
+Chosen by the owner: 100 offers on the existing stores (s1-s6), produced by a seeded script plus a generated JSON file.
 
 ## Approach
 
@@ -430,8 +432,8 @@ Chosen by you: 100 offers on the existing stores (s1-s6), produced by a seeded s
 
 1. **Tests first (red):** new `tests/test_bulk_offers.py`. Fails until the file exists. Existing tests are not touched.
 2. **Generator:** new `scripts/__init__.py` and `scripts/gen_fake_offers.py`.
-3. **Generate the file** (a shell command, so it needs your approval), then run the whole suite: `pytest -q`.
-4. **Review:** I show a short summary (counts by store, type and edge case) and a handful of sample records. README is not changed unless you ask.
+3. **Generate the file** (a shell command, so it needs approval), then run the whole suite: `pytest -q`.
+4. **Review:** I show a short summary (counts by store, type and edge case) and a handful of sample records. README is not changed unless asked.
 
 ## Tests (`tests/test_bulk_offers.py`)
 
@@ -449,5 +451,5 @@ Chosen by you: 100 offers on the existing stores (s1-s6), produced by a seeded s
 ## Notes and risks
 
 - With about 17 offers per store, an all-groups member gets a long `get_eligible_offers` result, which is token-heavy if the assistant is ever run on this file. That is fine for tests.
-- The file is test data only. If you later want `/chat` or the evals to run on it, `run_assistant` would need an `offers` parameter; that is not part of this plan.
+- The file is test data only. If `/chat` or the evals should later run on it, `run_assistant` would need an `offers` parameter; that is not part of this plan.
 - Hand-written exact numbers (for example "$37.50 off") are not stored in the data; the tests check invariants, and `best_combination` stays the source of truth.

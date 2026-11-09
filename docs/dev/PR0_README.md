@@ -1,5 +1,7 @@
 # PR 0: housekeeping before we build
 
+> Working notes, kept for history; may be out of date.
+
 A small, boring, important step: make the repo safe to hold a secret, and make sure the tests run.
 
 ## What this PR does
