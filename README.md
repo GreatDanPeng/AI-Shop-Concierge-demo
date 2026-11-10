@@ -10,6 +10,14 @@
 
 A members-only discount shop with an AI concierge you can embed on any page. Pick a demo member and the shop shows only the offers that member qualifies for; the AI concierge helps users with questions (best deals, why an offer is missing, what a cart costs).
 
+## Youtube Demo
+
+<p align="center">
+  <a href="https://youtu.be/FI0znsqrE6U">
+    <img src="https://img.youtube.com/vi/FI0znsqrE6U/maxresdefault.jpg" alt="Watch the demo video on YouTube" width="720" />
+  </a>
+</p>
+
 ## Features
 
 <img src="docs/screenshots/brands-grid.png" alt="12 stores for a teacher" width="325" align="right" />
